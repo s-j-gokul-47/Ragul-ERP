@@ -1,0 +1,162 @@
+/* Header styles */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-4);
+  z-index: 50;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent-primary), #818cf8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-bold);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.icon-btn:hover, .icon-btn:active {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-danger);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-primary);
+}
+
+/* Content Area */
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 76px var(--space-4) 90px var(--space-4); /* Space for header and bottom nav */
+}
+
+/* Bottom Navigation */
+.bottom-nav, #bottom-nav-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-top: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 var(--space-2) env(safe-area-inset-bottom);
+  z-index: 50;
+  max-width: 500px;
+  margin: 0 auto;
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-bounce);
+}
+
+.nav-item i {
+  font-size: 1.5rem;
+  transition: transform var(--transition-bounce), color var(--transition-fast);
+}
+
+.nav-item span {
+  font-size: 0.65rem;
+  font-weight: var(--font-medium);
+  transition: color var(--transition-fast);
+}
+
+.nav-item.active {
+  color: var(--accent-primary);
+}
+
+.nav-item.active i {
+  transform: translateY(-2px);
+  text-shadow: var(--shadow-glow);
+}
+
+.nav-item:active {
+  transform: scale(0.92);
+}
+
+/* Add Button (Floating Action Style inside Nav) */
+.nav-item-action {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--accent-primary), #818cf8);
+  border-radius: var(--radius-full);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-15px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+  border: 4px solid var(--bg-primary);
+  transition: transform var(--transition-bounce);
+}
+
+.nav-item-action i {
+  font-size: 1.5rem;
+}
+
+.nav-item-action:active {
+  transform: translateY(-15px) scale(0.92);
+}
