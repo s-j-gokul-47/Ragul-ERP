@@ -1,0 +1,6 @@
+{
+  "name": "Mobile ERP Application",
+  "description": "A high-fidelity mobile ERP application featuring 16 unified components for full enterprise resource planning, covering Dashboard, Inventory, Purchase Orders, Suppliers, Stock Alerts, and Financial Overview.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
