@@ -1,6 +1,7 @@
 import { renderHeader } from './components/layout/header.js';
 import { renderBottomNav } from './components/layout/bottom-nav.js';
 import { renderDashboard } from './components/erp/dashboard.js';
+import { renderSettings } from './components/erp/settings.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize Layout
@@ -21,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Simple routing
     if (tabId === 'home') {
       renderDashboard('main-content');
+    } else if (tabId === 'settings') {
+      renderSettings('main-content');
     } else {
       mainContent.innerHTML = `
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; opacity: 0; animation: fadeIn 0.3s forwards;">

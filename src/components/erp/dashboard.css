@@ -20,7 +20,7 @@
 
 .metric-card {
   background: var(--bg-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: var(--space-4);
   display: flex;
@@ -114,7 +114,7 @@
   font-size: 1.5rem;
   color: var(--accent-primary);
   transition: all var(--transition-bounce);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 .action-btn:active .action-icon {
@@ -133,7 +133,7 @@
   background: var(--bg-secondary);
   border-radius: var(--radius-xl);
   padding: var(--space-2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 .activity-item {
@@ -141,7 +141,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .activity-item:last-child {
