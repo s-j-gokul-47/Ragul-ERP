@@ -1,3 +1,5 @@
+import { renderPersonalInfo } from './personal-info.js';
+
 export function renderSettings(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -21,7 +23,7 @@ export function renderSettings(containerId) {
       <div class="settings-section">
         <div class="settings-section-title">Account</div>
         <div class="settings-list">
-          <div class="settings-item">
+          <div class="settings-item" id="pi-settings-item" style="cursor: pointer;">
             <div class="settings-item-left">
               <div class="settings-icon"><i class="ri-user-settings-line"></i></div>
               <div class="settings-label">Personal Information</div>
@@ -108,4 +110,12 @@ export function renderSettings(containerId) {
     document.documentElement.classList.toggle('light-mode');
     themeToggleSwitch.classList.toggle('active');
   });
+
+  // Handle Personal Information Click
+  const piSettingsItem = container.querySelector('#pi-settings-item');
+  if (piSettingsItem) {
+    piSettingsItem.addEventListener('click', () => {
+      renderPersonalInfo(containerId);
+    });
+  }
 }
