@@ -1,4 +1,6 @@
 import { renderPersonalInfo } from './personal-info.js';
+import { renderLanguageSettings } from './language-settings.js';
+import { renderSecuritySettings } from './security-settings.js';
 
 export function renderSettings(containerId) {
   const container = document.getElementById(containerId);
@@ -37,7 +39,7 @@ export function renderSettings(containerId) {
             </div>
             <div class="settings-item-right"><i class="ri-arrow-right-s-line"></i></div>
           </div>
-          <div class="settings-item">
+          <div class="settings-item" id="security-settings-item" style="cursor: pointer;">
             <div class="settings-item-left">
               <div class="settings-icon"><i class="ri-shield-keyhole-line"></i></div>
               <div class="settings-label">Security & Passwords</div>
@@ -69,7 +71,7 @@ export function renderSettings(containerId) {
               <div class="toggle-switch" id="theme-toggle-switch"></div>
             </div>
           </div>
-          <div class="settings-item">
+          <div class="settings-item" id="lang-settings-item" style="cursor: pointer;">
             <div class="settings-item-left">
               <div class="settings-icon"><i class="ri-global-line"></i></div>
               <div class="settings-label">Language</div>
@@ -116,6 +118,22 @@ export function renderSettings(containerId) {
   if (piSettingsItem) {
     piSettingsItem.addEventListener('click', () => {
       renderPersonalInfo(containerId);
+    });
+  }
+
+  // Handle Language Settings Click
+  const langSettingsItem = container.querySelector('#lang-settings-item');
+  if (langSettingsItem) {
+    langSettingsItem.addEventListener('click', () => {
+      renderLanguageSettings(containerId);
+    });
+  }
+
+  // Handle Security Settings Click
+  const secSettingsItem = container.querySelector('#security-settings-item');
+  if (secSettingsItem) {
+    secSettingsItem.addEventListener('click', () => {
+      renderSecuritySettings(containerId);
     });
   }
 }

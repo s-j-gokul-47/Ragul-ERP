@@ -2,14 +2,37 @@ import { renderHeader } from './components/layout/header.js';
 import { renderBottomNav } from './components/layout/bottom-nav.js';
 import { renderDashboard } from './components/erp/dashboard.js';
 import { renderSettings } from './components/erp/settings.js';
+import { renderAuth } from './components/auth/auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Layout
-  renderHeader('header-container');
-  renderBottomNav('bottom-nav-container', 'home');
+  // Initially render Auth
+  renderAuth('auth-container');
 
-  // Initialize Default View
-  renderDashboard('main-content');
+  // Listen for successful authentication
+  window.addEventListener('auth-success', (e) => {
+    // Save current user to localStorage
+    const userEmail = e.detail.user.email;
+    const usersData = localStorage.getItem('erp_users');
+    if (usersData) {
+      const users = JSON.parse(usersData);
+      const fullUser = users.find(u => u.email === userEmail);
+      if (fullUser) {
+        localStorage.setItem('currentUser', JSON.stringify(fullUser));
+      }
+    }
+
+    // Hide auth, show app
+    document.getElementById('auth-container').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+
+    // Initialize Layout
+    renderHeader('header-container');
+    checkProfileCompletion();
+    renderBottomNav('bottom-nav-container', 'home');
+
+    // Initialize Default View
+    renderDashboard('main-content');
+  });
 
   // Handle Navigation
   window.addEventListener('tab-change', (e) => {
@@ -37,3 +60,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+export function checkProfileCompletion() {
+  const bannerContainer = document.getElementById('profile-banner-container');
+  if (!bannerContainer) return;
+
+  const userData = localStorage.getItem('currentUser');
+  if (!userData) return;
+  
+  const user = JSON.parse(userData);
+  
+  // Check if profile is complete
+  const isComplete = user.phone && user.dob && user.address && user.phone.trim() !== '' && user.address.trim() !== '';
+
+  if (!isComplete) {
+    bannerContainer.innerHTML = `
+      <div style="background-color: var(--danger-color); color: white; padding: 0.75rem 1rem; text-align: center; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <i class="ri-error-warning-line" style="font-size: 1.25rem;"></i>
+        <span>Remember, You should need to completly fill the Personal Information !!!</span>
+      </div>
+    `;
+  } else {
+    bannerContainer.innerHTML = '';
+  }
+}
