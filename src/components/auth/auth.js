@@ -121,7 +121,12 @@ export function renderAuth(containerId) {
       <div class="auth-wrapper">
         <div class="auth-card">
           <div class="auth-header">
-            <div class="auth-logo">R</div>
+            <div class="auth-logo-zoho" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 48px; height: 48px; margin: 0 auto 16px;">
+              <div style="background: var(--accent-danger); border-radius: 8px;"></div>
+              <div style="background: var(--accent-primary); border-radius: 8px;"></div>
+              <div style="background: var(--accent-success); border-radius: 8px;"></div>
+              <div style="background: var(--accent-warning); border-radius: 8px;"></div>
+            </div>
             <h1 class="auth-title">${title}</h1>
             <p class="auth-subtitle">${subtitle}</p>
           </div>

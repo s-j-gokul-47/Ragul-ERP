@@ -17,29 +17,30 @@ export function renderSecuritySettings(containerId) {
         <div class="sec-section">
           <h3 class="sec-section-title">Change Password</h3>
           <p class="sec-section-desc">Ensure your account is using a long, random password to stay secure.</p>
-          <form class="sec-form">
+          <form class="sec-form" id="sec-pwd-form">
             <div class="sec-form-group">
               <label>Current Password</label>
               <div class="sec-input-wrapper">
-                <input type="password" class="sec-input" placeholder="Enter current password" />
+                <input type="password" id="sec-current-pwd" class="sec-input" placeholder="Enter current password" required />
                 <i class="ri-eye-off-line sec-eye-icon"></i>
               </div>
             </div>
             <div class="sec-form-group">
               <label>New Password</label>
               <div class="sec-input-wrapper">
-                <input type="password" class="sec-input" placeholder="Enter new password" />
+                <input type="password" id="sec-new-pwd" class="sec-input" placeholder="Enter new password" required />
                 <i class="ri-eye-off-line sec-eye-icon"></i>
               </div>
             </div>
             <div class="sec-form-group">
               <label>Confirm New Password</label>
               <div class="sec-input-wrapper">
-                <input type="password" class="sec-input" placeholder="Confirm new password" />
+                <input type="password" id="sec-confirm-pwd" class="sec-input" placeholder="Confirm new password" required />
                 <i class="ri-eye-off-line sec-eye-icon"></i>
               </div>
             </div>
-            <button type="button" class="sec-btn-primary">Update Password</button>
+            <button type="submit" id="sec-update-pwd-btn" class="sec-btn-primary">Update Password</button>
+            <div id="sec-pwd-msg" style="margin-top: 10px; font-size: 0.875rem; font-weight: 500;"></div>
           </form>
         </div>
 
@@ -128,9 +129,85 @@ export function renderSecuritySettings(containerId) {
   tfaToggle.addEventListener('click', () => {
     tfaToggle.classList.toggle('active');
     if (tfaToggle.classList.contains('active')) {
-      tfaStatusText.innerHTML = '<i class="ri-shield-check-fill" style="color:var(--success-color)"></i> 2FA is currently enabled';
+      tfaStatusText.innerHTML = '<i class="ri-shield-check-fill" style="color:var(--accent-success)"></i> 2FA is currently enabled';
     } else {
       tfaStatusText.innerHTML = '<i class="ri-shield-check-line"></i> 2FA is currently disabled';
     }
   });
+
+  // Handle Password Update
+  const pwdForm = document.getElementById('sec-pwd-form');
+  const msgDiv = document.getElementById('sec-pwd-msg');
+  const currentPwdInput = document.getElementById('sec-current-pwd');
+  const newPwdInput = document.getElementById('sec-new-pwd');
+  const confirmPwdInput = document.getElementById('sec-confirm-pwd');
+  const updateBtn = document.getElementById('sec-update-pwd-btn');
+
+  if (pwdForm) {
+    pwdForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      msgDiv.textContent = '';
+      msgDiv.style.color = '';
+
+      const currentPwd = currentPwdInput.value;
+      const newPwd = newPwdInput.value;
+      const confirmPwd = confirmPwdInput.value;
+
+      const userDataStr = localStorage.getItem('currentUser');
+      if (!userDataStr) {
+        msgDiv.textContent = 'User session not found. Please log in again.';
+        msgDiv.style.color = 'var(--accent-danger)';
+        return;
+      }
+
+      const user = JSON.parse(userDataStr);
+
+      if (user.password !== currentPwd) {
+        msgDiv.textContent = 'Incorrect current password.';
+        msgDiv.style.color = 'var(--accent-danger)';
+        return;
+      }
+
+      if (newPwd !== confirmPwd) {
+        msgDiv.textContent = 'New passwords do not match.';
+        msgDiv.style.color = 'var(--accent-danger)';
+        return;
+      }
+
+      if (newPwd.length < 4) {
+        msgDiv.textContent = 'Password must be at least 4 characters long.';
+        msgDiv.style.color = 'var(--accent-danger)';
+        return;
+      }
+
+      // Update password
+      updateBtn.textContent = 'Updating...';
+      updateBtn.disabled = true;
+
+      setTimeout(() => {
+        user.password = newPwd;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+
+        const usersData = localStorage.getItem('erp_users');
+        if (usersData) {
+          const users = JSON.parse(usersData);
+          const index = users.findIndex(u => u.email === user.email);
+          if (index !== -1) {
+            users[index].password = newPwd;
+            localStorage.setItem('erp_users', JSON.stringify(users));
+          }
+        }
+
+        msgDiv.textContent = 'Password updated successfully!';
+        msgDiv.style.color = 'var(--accent-success)';
+        
+        currentPwdInput.value = '';
+        newPwdInput.value = '';
+        confirmPwdInput.value = '';
+        
+        updateBtn.textContent = 'Update Password';
+        updateBtn.disabled = false;
+      }, 600);
+    });
+  }
 }

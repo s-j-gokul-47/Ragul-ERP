@@ -1,6 +1,7 @@
 import { renderPersonalInfo } from './personal-info.js';
 import { renderLanguageSettings } from './language-settings.js';
 import { renderSecuritySettings } from './security-settings.js';
+import { renderCompanyDetails } from './company-details.js';
 
 export function renderSettings(containerId) {
   const container = document.getElementById(containerId);
@@ -11,9 +12,12 @@ export function renderSettings(containerId) {
       
       <!-- Profile Header -->
       <div class="settings-profile">
-        <div class="settings-avatar">
-          R
-          <div class="settings-avatar-edit"><i class="ri-pencil-line"></i></div>
+        <div class="settings-avatar-zoho" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 64px; height: 64px; position: relative; margin-right: 16px;">
+          <div style="background: var(--accent-danger); border-radius: 8px;"></div>
+          <div style="background: var(--accent-primary); border-radius: 8px;"></div>
+          <div style="background: var(--accent-success); border-radius: 8px;"></div>
+          <div style="background: var(--accent-warning); border-radius: 8px;"></div>
+          <div class="settings-avatar-edit" style="position: absolute; bottom: -5px; right: -5px; width: 24px; height: 24px; background: var(--bg-primary); border: 2px solid var(--accent-primary); color: var(--accent-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75rem;"><i class="ri-pencil-line"></i></div>
         </div>
         <div class="settings-profile-info">
           <div class="settings-profile-name">Ragul Admin</div>
@@ -32,7 +36,7 @@ export function renderSettings(containerId) {
             </div>
             <div class="settings-item-right"><i class="ri-arrow-right-s-line"></i></div>
           </div>
-          <div class="settings-item">
+          <div class="settings-item" id="company-details-item" style="cursor: pointer;">
             <div class="settings-item-left">
               <div class="settings-icon"><i class="ri-building-line"></i></div>
               <div class="settings-label">Company Details</div>
@@ -134,6 +138,14 @@ export function renderSettings(containerId) {
   if (secSettingsItem) {
     secSettingsItem.addEventListener('click', () => {
       renderSecuritySettings(containerId);
+    });
+  }
+
+  // Handle Company Details Click
+  const cdSettingsItem = container.querySelector('#company-details-item');
+  if (cdSettingsItem) {
+    cdSettingsItem.addEventListener('click', () => {
+      renderCompanyDetails(containerId);
     });
   }
 }

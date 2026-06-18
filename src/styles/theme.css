@@ -8,13 +8,13 @@
   --text-secondary: #a0a5b1;
   --text-muted: #6b7280;
 
-  --accent-primary: #6366f1; /* Indigo */
-  --accent-primary-hover: #4f46e5;
-  --accent-primary-alpha: rgba(99, 102, 241, 0.15);
+  --accent-primary: #0062FF; /* Zoho Blue */
+  --accent-primary-hover: #0052cc;
+  --accent-primary-alpha: rgba(0, 98, 255, 0.15);
   
-  --accent-success: #10b981;
-  --accent-warning: #f59e0b;
-  --accent-danger: #ef4444;
+  --accent-success: #00B36B; /* Zoho Green */
+  --accent-warning: #FFB800; /* Zoho Yellow */
+  --accent-danger: #F0483E; /* Zoho Red */
 
   /* Glassmorphism & Borders */
   --glass-bg: rgba(26, 29, 36, 0.7);
@@ -56,7 +56,7 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
-  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.3);
+  --shadow-glow: 0 0 15px rgba(0, 98, 255, 0.3);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -81,5 +81,5 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.15);
+  --shadow-glow: 0 0 15px rgba(0, 98, 255, 0.15);
 }
