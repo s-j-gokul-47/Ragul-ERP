@@ -7,7 +7,9 @@ import {
   Package, 
   Tag, 
   AlertCircle,
-  X
+  X,
+  ChevronRight,
+  Box
 } from 'lucide-react';
 import { InventoryItem, Warehouse, Supplier } from '../../types';
 
@@ -95,63 +97,81 @@ export default function InventoryManagement({
   };
 
   return (
-    <div className="space-y-4 pb-6">
+    <div className="space-y-6 pb-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Mini Screen Header */}
-      <div className="flex justify-between items-center bg-slate-100 p-2.5 rounded-lg -mx-2 -mt-2 border-b border-slate-200">
-        <div>
-          <span className="text-[10px] text-slate-500 uppercase font-mono tracking-wider">STOCK REGISTRY</span>
-          <h2 className="text-sm font-bold text-slate-800">Inventory Items ({filteredItems.length})</h2>
+      <div className="flex justify-between items-end bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-5 rounded-2xl shadow-lg border border-slate-700/50 relative overflow-hidden group">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/20 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        
+        <div className="relative z-10">
+          <span className="text-[10px] text-sky-400 uppercase font-mono tracking-widest font-bold flex items-center gap-2 mb-1.5">
+            <Box size={12} /> GLOBAL STOCK REGISTRY
+          </span>
+          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+            Inventory Assets 
+            <span className="bg-white/10 text-sky-300 text-xs py-1 px-2.5 rounded-full backdrop-blur-md border border-white/10">
+              {filteredItems.length} Records
+            </span>
+          </h2>
         </div>
         <button 
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold py-1.5 px-3 rounded-lg shadow-sm transition"
+          className="relative z-10 flex items-center gap-2 bg-white text-slate-900 hover:bg-sky-50 hover:text-sky-700 text-sm font-semibold py-2.5 px-5 rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-300 transform hover:scale-105 active:scale-95 group/btn"
         >
-          <Plus size={14} /> Add SKU
+          <Plus size={16} className="transition-transform group-hover/btn:rotate-90" /> Add New SKU
         </button>
       </div>
 
       {/* Advanced Search & Filtration Controls */}
-      <div className="space-y-2">
-        <div className="relative">
+      <div className="bg-white/60 backdrop-blur-xl p-3 rounded-2xl border border-white/50 shadow-sm space-y-3">
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-sky-500 transition-colors">
+            <Search size={18} />
+          </div>
           <input 
             type="text" 
-            placeholder="Search by SKU or item name..." 
+            placeholder="Search catalog by SKU, product name, or attributes..." 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 pl-9 pr-4 text-xs focus:bg-white focus:ring-1 focus:ring-sky-500 transition outline-none"
+            className="w-full bg-white/80 border border-slate-200/60 rounded-xl py-3 pl-11 pr-10 text-sm text-slate-700 placeholder:text-slate-400 focus:bg-white focus:border-sky-300 focus:ring-4 focus:ring-sky-100 transition-all duration-300 outline-none"
           />
-          <div className="absolute left-3 top-2.5 text-slate-400">
-            <Search size={14} />
-          </div>
           {search && (
-            <button onClick={() => setSearch('')} className="absolute right-3 top-2.5 text-slate-400">
-              <X size={14} />
+            <button 
+              onClick={() => setSearch('')} 
+              className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-rose-500 transition-colors"
+            >
+              <X size={16} />
             </button>
           )}
         </div>
 
         {/* Filter Carousel by Location & Category */}
-        <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-2 px-2 scrollbar-none">
-          <select 
-            value={selectedWarehouse} 
-            onChange={(e) => setSelectedWarehouse(e.target.value)}
-            className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] font-medium text-slate-600 outline-none flex-shrink-0"
-          >
-            <option value="All">All Warehouses</option>
-            {warehouses.map(w => (
-              <option key={w.id} value={w.id}>{w.name}</option>
-            ))}
-          </select>
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none items-center">
+          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200/60 rounded-xl p-1 shrink-0">
+            <SlidersHorizontal size={14} className="text-slate-400 ml-2" />
+            <select 
+              value={selectedWarehouse} 
+              onChange={(e) => setSelectedWarehouse(e.target.value)}
+              className="bg-transparent border-none py-1.5 px-2 text-xs font-semibold text-slate-700 focus:ring-0 outline-none cursor-pointer"
+            >
+              <option value="All">Global Warehouses</option>
+              {warehouses.map(w => (
+                <option key={w.id} value={w.id}>{w.name}</option>
+              ))}
+            </select>
+          </div>
 
-          <div className="flex gap-1">
+          <div className="h-6 w-px bg-slate-200 shrink-0 mx-1"></div>
+
+          <div className="flex gap-1.5">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`text-[11px] font-medium px-2.5 py-1 rounded-lg border flex-shrink-0 transition ${
+                className={`text-xs font-semibold px-4 py-1.5 rounded-xl transition-all duration-300 whitespace-nowrap ${
                   selectedCategory === cat 
-                    ? 'bg-slate-800 text-white border-slate-800' 
-                    : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'
+                    ? 'bg-slate-800 text-white shadow-md shadow-slate-800/20 translate-y-[-1px]' 
+                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:border-slate-300'
                 }`}
               >
                 {cat}
@@ -162,9 +182,9 @@ export default function InventoryManagement({
       </div>
 
       {/* Grid of SKU items */}
-      <div className="space-y-2.5">
+      <div className="grid grid-cols-1 gap-4">
         {filteredItems.length > 0 ? (
-          filteredItems.map((item) => {
+          filteredItems.map((item, idx) => {
             const isLowStock = item.qty <= item.minQty;
             const whName = warehouses.find(w => w.id === item.warehouseId)?.name || 'Direct Depot';
             return (
@@ -175,266 +195,321 @@ export default function InventoryManagement({
                   setSelectedItemId(item.id);
                   setActiveScreen('Item Details');
                 }}
-                className={`p-3.5 bg-white border rounded-xl hover:border-slate-300 transition cursor-pointer flex flex-col gap-2 shadow-xs ${
-                  isLowStock ? 'ring-1 ring-rose-200 border-rose-200 bg-rose-[1px]' : 'border-slate-100'
+                className={`group cursor-pointer bg-white rounded-2xl p-5 border transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between ${
+                  isLowStock ? 'border-rose-200/60 bg-gradient-to-br from-rose-50/30 to-white' : 'border-slate-200/60'
                 }`}
+                style={{ animationDelay: `${idx * 50}ms` }}
               >
-                <div className="flex justify-between items-start">
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] bg-slate-100 border border-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-mono font-bold">
-                      {item.sku}
-                    </span>
-                    <h3 className="text-xs font-bold text-slate-800 line-clamp-1 mt-1">{item.name}</h3>
+                {/* Decoration */}
+                <div className="absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-sky-50 to-indigo-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+                <div className="relative z-10 space-y-4">
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="space-y-1 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] bg-slate-100/80 border border-slate-200/80 text-slate-600 px-2 py-0.5 rounded-md font-mono font-bold uppercase tracking-wider backdrop-blur-sm">
+                          {item.sku}
+                        </span>
+                        {isLowStock && (
+                          <span className="flex items-center gap-1 text-[9px] text-rose-600 bg-rose-100/80 border border-rose-200/50 px-1.5 py-0.5 rounded-md font-bold font-mono animate-pulse">
+                            <AlertCircle size={10} /> LOW STOCK
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-sm font-bold text-slate-800 line-clamp-2 leading-tight pt-1 group-hover:text-sky-700 transition-colors">{item.name}</h3>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-400 font-medium">Value/Unit</p>
-                    <p className="text-xs font-bold text-slate-800">${item.price.toFixed(2)}</p>
+
+                  <div className="grid grid-cols-2 gap-3 bg-slate-50/50 rounded-xl p-3 border border-slate-100/50">
+                    <div>
+                      <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider mb-0.5">Value/Unit</p>
+                      <p className="text-sm font-extrabold text-slate-800">${item.price.toFixed(2)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider mb-0.5">Stock Level</p>
+                      <p className={`text-sm font-extrabold flex items-center justify-end gap-1 ${isLowStock ? 'text-rose-600' : 'text-emerald-600'}`}>
+                        {item.qty} <span className="text-[10px] text-slate-500 font-normal">{item.unit}</span>
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center text-[10px] border-t border-slate-50 pt-2 text-slate-500">
-                  <div className="flex items-center gap-1">
-                    <MapPin size={10} className="text-sky-500" />
+                <div className="relative z-10 flex justify-between items-center text-[11px] mt-4 pt-3 border-t border-slate-100 text-slate-500 font-medium">
+                  <div className="flex items-center gap-1.5">
+                    <MapPin size={12} className="text-sky-500" />
                     <span className="truncate max-w-[120px]">{whName}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-0.5">
-                      <Package size={10} />
-                      <span className={`font-semibold ${isLowStock ? 'text-rose-600 font-bold' : 'text-slate-700'}`}>
-                        {item.qty} {item.unit}
-                      </span>
-                    </div>
-                    {isLowStock && (
-                      <span className="flex items-center gap-0.5 text-rose-600 bg-rose-50 px-1 py-0.2 rounded font-semibold font-mono">
-                        <AlertCircle size={8} /> LOW
-                      </span>
-                    )}
+                  <div className="flex items-center text-sky-600 font-semibold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    View Details <ChevronRight size={14} />
                   </div>
                 </div>
               </div>
             );
           })
         ) : (
-          <div className="bg-slate-50 border border-dashed border-slate-200 rounded-2xl p-8 text-center text-slate-400 space-y-2">
-            <Package size={30} className="mx-auto text-slate-300" />
-            <p className="text-xs font-medium">No SKU records match this query.</p>
+          <div className="col-span-full bg-white/50 backdrop-blur-sm border-2 border-dashed border-slate-200 rounded-3xl p-12 text-center text-slate-500 space-y-4">
+            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-2 text-slate-400">
+              <Package size={32} />
+            </div>
+            <h3 className="text-lg font-bold text-slate-700">No SKUs Found</h3>
+            <p className="text-sm">We couldn't find any items matching your current filters.</p>
             <button 
               onClick={() => {
                 setSearch('');
                 setSelectedCategory('All');
                 setSelectedWarehouse('All');
               }}
-              className="text-xs text-sky-600 font-semibold hover:underline"
+              className="mt-4 bg-white border border-slate-200 text-slate-700 font-semibold py-2 px-6 rounded-xl hover:bg-slate-50 hover:shadow-sm transition-all"
             >
-              Clear filters
+              Clear all filters
             </button>
           </div>
         )}
       </div>
 
-      {/* Create New SKU Form Modal overlay */}
+      {/* Create New SKU Slide-over Panel */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4">
-          <div className="bg-white rounded-t-2xl sm:rounded-2xl max-h-[90vh] overflow-y-auto w-full max-w-md p-5 space-y-4 shadow-2xl border border-slate-100">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-2.5">
-              <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1.5Packed">
-                <Package className="text-sky-600" size={16} /> Direct Core SKU Entry
-              </h3>
+        <div className="fixed inset-0 z-50 flex justify-end">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+            onClick={() => setShowAddModal(false)}
+          ></div>
+          
+          {/* Sliding Panel */}
+          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 ease-out border-l border-white/20">
+            <div className="flex justify-between items-center px-6 py-5 border-b border-slate-100 bg-white/80 backdrop-blur-md sticky top-0 z-10">
+              <div>
+                <h3 className="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+                  <div className="p-1.5 bg-sky-100 text-sky-600 rounded-lg">
+                    <Package size={18} />
+                  </div>
+                  Direct Core SKU Entry
+                </h3>
+                <p className="text-[11px] text-slate-400 mt-1 font-medium">Add a new physical asset to the global registry</p>
+              </div>
               <button 
                 onClick={() => setShowAddModal(false)}
-                className="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 transition"
+                className="p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
               >
-                <X size={16} />
+                <X size={20} />
               </button>
             </div>
 
-            <form onSubmit={handleAddItem} className="space-y-3 text-xs text-slate-700">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="font-semibold block">SKU Code *</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. SSD-NVME-2TB" 
-                    value={newSKU}
-                    onChange={(e) => setNewSKU(e.target.value)}
-                    required
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold block">Category</label>
-                  <select 
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  >
-                    <option value="Processors">Processors</option>
-                    <option value="Graphics Cards">Graphics Cards</option>
-                    <option value="Memory">Memory</option>
-                    <option value="Storage">Storage</option>
-                    <option value="Metal Works">Metal Works</option>
-                    <option value="Cabling">Cabling</option>
-                  </select>
-                </div>
-              </div>
+            <div className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-slate-200">
+              <form id="add-sku-form" onSubmit={handleAddItem} className="space-y-6 text-sm text-slate-700">
+                
+                {/* Basic Info Section */}
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">1. Identity</h4>
+                  
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-slate-800 block">Item Title <span className="text-rose-500">*</span></label>
+                    <input 
+                      type="text" 
+                      placeholder="Official component name" 
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      required
+                      className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all outline-none"
+                    />
+                  </div>
 
-              <div className="space-y-1">
-                <label className="font-semibold block">Item Title *</label>
-                <input 
-                  type="text" 
-                  placeholder="Official component name" 
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  required
-                  className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                />
-              </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block">SKU Code <span className="text-rose-500">*</span></label>
+                      <input 
+                        type="text" 
+                        placeholder="e.g. SSD-NVME-2TB" 
+                        value={newSKU}
+                        onChange={(e) => setNewSKU(e.target.value)}
+                        required
+                        className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 font-mono text-xs transition-all outline-none uppercase"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block">Category</label>
+                      <select 
+                        value={newCategory}
+                        onChange={(e) => setNewCategory(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all outline-none"
+                      >
+                        <option value="Processors">Processors</option>
+                        <option value="Graphics Cards">Graphics Cards</option>
+                        <option value="Memory">Memory</option>
+                        <option value="Storage">Storage</option>
+                        <option value="Metal Works">Metal Works</option>
+                        <option value="Cabling">Cabling</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="font-semibold block">Selling Price ($)</label>
-                  <input 
-                    type="number" 
-                    value={newPrice}
-                    onChange={(e) => setNewPrice(Number(e.target.value))}
-                    min="0"
-                    step="0.01"
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold block">Acquisition Cost ($)</label>
-                  <input 
-                    type="number" 
-                    value={newCost}
-                    onChange={(e) => setNewCost(Number(e.target.value))}
-                    min="0"
-                    step="0.01"
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
-                </div>
-              </div>
+                {/* Financials Section */}
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">2. Financials & Metrics</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5 relative">
+                      <label className="font-semibold text-slate-800 block">Selling Price</label>
+                      <span className="absolute left-3 top-[34px] text-slate-400 font-semibold">$</span>
+                      <input 
+                        type="number" 
+                        value={newPrice}
+                        onChange={(e) => setNewPrice(Number(e.target.value))}
+                        min="0"
+                        step="0.01"
+                        className="w-full bg-slate-50 border border-slate-200 py-3 pl-7 pr-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 font-mono transition-all outline-none"
+                      />
+                    </div>
+                    <div className="space-y-1.5 relative">
+                      <label className="font-semibold text-slate-800 block">Acquisition Cost</label>
+                      <span className="absolute left-3 top-[34px] text-slate-400 font-semibold">$</span>
+                      <input 
+                        type="number" 
+                        value={newCost}
+                        onChange={(e) => setNewCost(Number(e.target.value))}
+                        min="0"
+                        step="0.01"
+                        className="w-full bg-slate-50 border border-slate-200 py-3 pl-7 pr-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 font-mono transition-all outline-none"
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-3 gap-2">
-                <div className="space-y-1">
-                  <label className="font-semibold block">Quantity</label>
-                  <input 
-                    type="number" 
-                    value={newQty}
-                    onChange={(e) => setNewQty(Number(e.target.value))}
-                    min="0"
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block text-xs">Initial Qty</label>
+                      <input 
+                        type="number" 
+                        value={newQty}
+                        onChange={(e) => setNewQty(Number(e.target.value))}
+                        min="0"
+                        className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-center font-bold focus:ring-2 focus:ring-sky-500/20 outline-none"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block text-xs">Min Safety</label>
+                      <input 
+                        type="number" 
+                        value={newMinQty}
+                        onChange={(e) => setNewMinQty(Number(e.target.value))}
+                        min="0"
+                        className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-center text-slate-500 focus:ring-2 focus:ring-sky-500/20 outline-none"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block text-xs">Unit Type</label>
+                      <input 
+                        type="text" 
+                        placeholder="Units" 
+                        value={newUnit}
+                        onChange={(e) => setNewUnit(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-center focus:ring-2 focus:ring-sky-500/20 outline-none"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <label className="font-semibold block">Min safety qty</label>
-                  <input 
-                    type="number" 
-                    value={newMinQty}
-                    onChange={(e) => setNewMinQty(Number(e.target.value))}
-                    min="0"
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold block">Unit type</label>
-                  <input 
-                    type="text" 
-                    placeholder="e.g. Units, Pcs" 
-                    value={newUnit}
-                    onChange={(e) => setNewUnit(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="font-semibold block">Warehouse Assign</label>
-                  <select 
-                    value={newWarehouseId}
-                    onChange={(e) => setNewWarehouseId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  >
-                    {warehouses.map(w => (
-                      <option key={w.id} value={w.id}>{w.name}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="space-y-1">
-                  <label className="font-semibold block">Supplier Link</label>
-                  <select 
-                    value={newSupplierId}
-                    onChange={(e) => setNewSupplierId(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  >
-                    {suppliers.map(s => (
-                      <option key={s.id} value={s.id}>{s.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+                {/* Topology Section */}
+                <div className="space-y-4">
+                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">3. Topology & Tracking</h4>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block">Warehouse Assign</label>
+                      <select 
+                        value={newWarehouseId}
+                        onChange={(e) => setNewWarehouseId(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none"
+                      >
+                        {warehouses.map(w => (
+                          <option key={w.id} value={w.id}>{w.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block">Supplier Link</label>
+                      <select 
+                        value={newSupplierId}
+                        onChange={(e) => setNewSupplierId(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none"
+                      >
+                        {suppliers.map(s => (
+                          <option key={s.id} value={s.id}>{s.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="font-semibold block">Zone (e.g., Zone A)</label>
-                  <input 
-                    type="text" 
-                    value={newZone}
-                    onChange={(e) => setNewZone(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block">Zone</label>
+                      <input 
+                        type="text" 
+                        value={newZone}
+                        onChange={(e) => setNewZone(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="font-semibold text-slate-800 block">Shelf</label>
+                      <input 
+                        type="text" 
+                        value={newShelf}
+                        onChange={(e) => setNewShelf(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <label className="flex items-start gap-3 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl cursor-pointer hover:bg-indigo-50 transition-colors">
+                    <div className="pt-0.5">
+                      <input 
+                        type="checkbox" 
+                        checked={newSerial}
+                        onChange={(e) => setNewSerial(e.target.checked)}
+                        className="rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500 h-4 w-4"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-indigo-900 text-sm">Individual Serial Tracking</p>
+                      <p className="text-xs text-indigo-700/70 mt-0.5">Require unique barcodes for every unit of this SKU.</p>
+                    </div>
+                  </label>
+
+                  <div className="space-y-1.5">
+                    <label className="font-semibold text-slate-800 block">General Notes</label>
+                    <textarea 
+                      rows={3}
+                      placeholder="Physical descriptions, handling guides..."
+                      value={newDesc}
+                      onChange={(e) => setNewDesc(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-sky-500/20 outline-none resize-none"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <label className="font-semibold block">Shelf Shelf (e.g., Row 4)</label>
-                  <input 
-                    type="text" 
-                    value={newShelf}
-                    onChange={(e) => setNewShelf(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg"
-                  />
-                </div>
-              </div>
 
-              <div className="flex items-center gap-2 py-0.5">
-                <input 
-                  type="checkbox" 
-                  id="serial_check"
-                  checked={newSerial}
-                  onChange={(e) => setNewSerial(e.target.checked)}
-                  className="rounded text-sky-600 focus:ring-sky-500 h-4 w-4"
-                />
-                <label htmlFor="serial_check" className="font-semibold cursor-pointer">Require individual serial tracking codes?</label>
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold block">General Notes</label>
-                <textarea 
-                  rows={2}
-                  placeholder="Physical descriptions, handling guides..."
-                  value={newDesc}
-                  onChange={(e) => setNewDesc(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg outline-none"
-                />
-              </div>
-
-              <div className="flex gap-2 pt-2.5">
+              </form>
+            </div>
+            
+            {/* Sticky Footer */}
+            <div className="p-6 border-t border-slate-100 bg-slate-50/80 backdrop-blur-md">
+              <div className="flex gap-3">
                 <button 
                   type="button" 
                   onClick={() => setShowAddModal(false)}
-                  className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold py-2 px-4 rounded-lg text-center"
+                  className="flex-1 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl transition-colors"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit" 
-                  id="submit-inventory-sku"
-                  className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm text-center"
+                  form="add-sku-form"
+                  className="flex-1 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-sky-500/20 hover:shadow-lg transition-all"
                 >
                   Confirm SKU
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

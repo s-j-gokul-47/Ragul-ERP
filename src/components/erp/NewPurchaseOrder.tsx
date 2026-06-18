@@ -7,7 +7,11 @@ import {
   Calendar, 
   Truck, 
   Settings,
-  X
+  X,
+  CreditCard,
+  Building2,
+  Box,
+  DollarSign
 } from 'lucide-react';
 import { PurchaseOrder, Supplier, InventoryItem } from '../../types';
 
@@ -96,37 +100,43 @@ export default function NewPurchaseOrder({
     };
 
     setPurchaseOrders(prev => [finalizedPO, ...prev]);
-    alert(`Successfully generated purchase order request ${finalizedPO.id} to supplier ${finalizedPO.supplierName}.`);
     setActiveScreen('Purchase Orders');
   };
 
   return (
-    <div className="space-y-4 pb-6">
-      {/* Detail header */}
-      <div className="flex items-center gap-2 bg-slate-100 p-2.5 rounded-lg -mx-4 -mt-4 border-b border-slate-200">
+    <div className="space-y-6 pb-6 animate-in slide-in-from-right-8 duration-500 fade-in">
+      {/* Screen Header */}
+      <div className="flex items-center gap-4 bg-white/80 backdrop-blur-xl p-4 rounded-2xl border border-slate-200/60 shadow-sm sticky top-0 z-10">
         <button 
           onClick={() => setActiveScreen('Purchase Orders')}
-          className="p-1 hover:bg-slate-200 rounded text-slate-600 transition"
+          className="p-2.5 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-xl transition-all duration-300 hover:-translate-x-1 border border-slate-200/50"
         >
-          <ChevronLeft size={18} />
+          <ChevronLeft size={20} />
         </button>
-        <div>
-          <span className="text-[10px] text-slate-500 uppercase font-mono tracking-wider">SUPPLY CHAIN REQUISITIONS</span>
-          <h2 className="text-sm font-bold text-slate-800">Draft Purchase Order</h2>
+        <div className="flex-1">
+          <span className="text-[10px] text-cyan-500 uppercase font-bold tracking-widest flex items-center gap-1.5 mb-0.5">
+            <FilePlus2 size={12} /> SUPPLY CHAIN REQUISITIONS
+          </span>
+          <h2 className="text-xl font-extrabold text-slate-800 tracking-tight">Draft Purchase Order</h2>
         </div>
       </div>
 
-      <form onSubmit={handleCreatePODraft} className="space-y-4 text-xs text-slate-700">
+      <form onSubmit={handleCreatePODraft} className="max-w-4xl space-y-6 text-sm text-slate-700">
         {/* Step 1: Supplier & terms */}
-        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-xs space-y-3">
-          <h3 className="text-xs font-bold text-slate-400 font-mono uppercase tracking-widest border-b border-slate-5s pb-1">Supplier Profile & Terms</h3>
+        <div className="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] space-y-5">
+          <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2 border-b border-slate-100 pb-3">
+            <div className="p-1.5 bg-cyan-100 text-cyan-600 rounded-lg">
+              <Building2 size={16} />
+            </div>
+            Supplier Profile & Terms
+          </h3>
           
-          <div className="space-y-1">
-            <label className="font-semibold block">Destination Vendor *</label>
+          <div className="space-y-2">
+            <label className="font-bold text-slate-700 block">Destination Vendor <span className="text-rose-500">*</span></label>
             <select
               value={selectedSupplierId}
               onChange={(e) => setSelectedSupplierId(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 p-2.5 rounded-lg outline-none font-semibold text-slate-800"
+              className="w-full bg-slate-50 border border-slate-200 p-3.5 rounded-xl focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none font-bold text-slate-800 transition-all cursor-pointer"
             >
               {suppliers.map(sup => (
                 <option key={sup.id} value={sup.id}>{sup.name} ({sup.contactPerson})</option>
@@ -134,13 +144,13 @@ export default function NewPurchaseOrder({
             </select>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="font-semibold block">Billing terms</label>
+          <div className="grid grid-cols-1 gap-5">
+            <div className="space-y-2">
+              <label className="font-bold text-slate-700 block flex items-center gap-1.5"><CreditCard size={14} className="text-slate-400" /> Billing Terms</label>
               <select
                 value={billingTerms}
                 onChange={(e) => setBillingTerms(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg outline-none"
+                className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none transition-all cursor-pointer font-medium"
               >
                 <option value="Net 30">Net 30 terms</option>
                 <option value="Net 60">Net 60 terms</option>
@@ -148,60 +158,68 @@ export default function NewPurchaseOrder({
                 <option value="COD (Cash on Lead)">Cash on Delivery</option>
               </select>
             </div>
-            <div className="space-y-1">
-              <label className="font-semibold block">Guaranteed Lead-time (Days)</label>
-              <input 
-                type="number" 
-                min="1" 
-                value={expectedDaysLag}
-                onChange={(e) => setExpectedDaysLag(Number(e.target.value))}
-                className="w-full bg-slate-50 border border-slate-200 p-2 rounded-lg outline-none"
-              />
+            <div className="space-y-2">
+              <label className="font-bold text-slate-700 block flex items-center gap-1.5"><Truck size={14} className="text-slate-400" /> Guaranteed Lead-time</label>
+              <div className="relative">
+                <input 
+                  type="number" 
+                  min="1" 
+                  value={expectedDaysLag}
+                  onChange={(e) => setExpectedDaysLag(Number(e.target.value))}
+                  className="w-full bg-slate-50 border border-slate-200 py-3 pl-3 pr-16 rounded-xl focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 outline-none transition-all font-bold"
+                />
+                <span className="absolute right-4 top-3.5 text-[10px] uppercase font-bold text-slate-400">Days</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Step 2: Line items list builder */}
-        <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-xs space-y-3">
-          <div className="flex justify-between items-center border-b border-slate-50 pb-1.5">
-            <h3 className="text-xs font-bold text-slate-400 font-mono uppercase tracking-widest">Requisition Item Lines</h3>
+        <div className="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] space-y-5">
+          <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+              <div className="p-1.5 bg-cyan-100 text-cyan-600 rounded-lg">
+                <Box size={16} />
+              </div>
+              Requisition Item Lines
+            </h3>
             <button
               type="button"
               onClick={handleAddLine}
-              className="text-[10px] text-sky-600 bg-sky-50 px-2 py-1 rounded font-bold hover:bg-sky-100 transition flex items-center gap-0.5"
+              className="text-xs text-white bg-slate-800 px-3 py-1.5 rounded-lg font-bold hover:bg-slate-900 shadow-md shadow-slate-800/20 transition-all flex items-center gap-1.5 active:scale-95"
             >
-              <Plus size={10} /> Add material line
+              <Plus size={14} /> Add material line
             </button>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-4">
             {lines.map((line, idx) => {
               const matchedItem = items.find(i => i.id === line.itemId);
               const costEst = matchedItem?.cost || 0;
               const subtotalEst = line.qty * costEst;
 
               return (
-                <div key={line.id} className="p-3 bg-slate-50 rounded-lg border border-slate-100 space-y-2">
-                  <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
-                    <span>LINE ITEM {idx + 1}</span>
+                <div key={line.id} className="p-5 bg-slate-50/50 rounded-2xl border border-slate-200/60 space-y-4 transition-all hover:shadow-md hover:border-cyan-200 group">
+                  <div className="flex justify-between items-center text-[10px] font-bold tracking-widest uppercase font-mono text-slate-400">
+                    <span className="bg-slate-200/50 px-2 py-1 rounded text-slate-500">LINE ITEM {idx + 1}</span>
                     {lines.length > 1 && (
                       <button 
                         type="button" 
                         onClick={() => handleRemoveLine(line.id)}
-                        className="text-rose-500 hover:text-rose-700 transition"
+                        className="text-rose-500 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-md transition-colors flex items-center gap-1"
                       >
-                        Remove block
+                        <Trash2 size={12} /> Remove block
                       </button>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="col-span-2 space-y-1">
-                      <label className="text-[10px] text-slate-450 block font-semibold">Inventory Item SKU</label>
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="md:col-span-2 space-y-2">
+                      <label className="text-[11px] text-slate-500 block font-bold uppercase tracking-wider">Inventory Item SKU</label>
                       <select
                         value={line.itemId}
                         onChange={(e) => handleLineChange(line.id, 'itemId', e.target.value)}
-                        className="w-full bg-white border border-slate-200 p-1.5 rounded outline-none text-slate-800"
+                        className="w-full bg-white border border-slate-200 p-2.5 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 text-slate-800 font-semibold cursor-pointer shadow-sm transition-all"
                       >
                         {items.map(item => (
                           <option key={item.id} value={item.id}>{item.sku} - {item.name}</option>
@@ -209,21 +227,21 @@ export default function NewPurchaseOrder({
                       </select>
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-slate-450 block font-semibold">Order Qty</label>
+                    <div className="space-y-2">
+                      <label className="text-[11px] text-slate-500 block font-bold uppercase tracking-wider">Order Qty</label>
                       <input 
                         type="number" 
                         min="1"
                         value={line.qty}
                         onChange={(e) => handleLineChange(line.id, 'qty', Number(e.target.value))}
-                        className="w-full bg-white border border-slate-200 p-1.5 rounded outline-none font-bold text-center"
+                        className="w-full bg-white border border-slate-200 p-2.5 rounded-xl outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 font-bold text-center shadow-sm transition-all text-cyan-700"
                       />
                     </div>
                   </div>
 
-                  <div className="flex justify-between text-[10px] text-slate-500 pt-1.5 border-t border-slate-100">
-                    <span>Cost per SKU: <span className="font-semibold text-slate-700">${costEst.toFixed(2)}</span></span>
-                    <span>Line Total: <span className="font-extrabold text-slate-800">${subtotalEst.toFixed(2)}</span></span>
+                  <div className="flex justify-between items-center text-[11px] pt-3 border-t border-slate-200/60">
+                    <span className="text-slate-500 font-medium">Est. Cost per SKU: <span className="font-bold text-slate-700">${costEst.toFixed(2)}</span></span>
+                    <span className="text-slate-500 font-medium bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">Line Total: <span className="font-extrabold text-cyan-700 text-sm">${subtotalEst.toFixed(2)}</span></span>
                   </div>
                 </div>
               );
@@ -238,9 +256,22 @@ export default function NewPurchaseOrder({
               return acc + (line.qty * cost);
             }, 0);
             return (
-              <div className="bg-slate-900 text-white p-3.5 rounded-lg flex justify-between items-center mt-3 shadow-inner">
-                <span className="text-xs font-semibold text-sky-400">Aggregated Cost Valuation</span>
-                <span className="text-base font-extrabold text-slate-100">${sum.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+              <div className="bg-gradient-to-r from-slate-900 to-cyan-950 text-white p-5 rounded-2xl flex justify-between items-center mt-6 shadow-xl relative overflow-hidden">
+                <div className="absolute right-0 top-0 opacity-10 pointer-events-none transform -translate-y-4 translate-x-4">
+                  <DollarSign size={100} />
+                </div>
+                <div className="relative z-10 flex items-center gap-3">
+                  <div className="p-2 bg-cyan-500/20 rounded-xl text-cyan-400">
+                    <Settings size={20} className="animate-spin-slow" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest block">Aggregated Cost Valuation</span>
+                    <span className="text-xs text-slate-400">Pre-tax estimate</span>
+                  </div>
+                </div>
+                <div className="relative z-10 text-right">
+                  <span className="text-2xl font-extrabold text-white tracking-tight">${sum.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                </div>
               </div>
             );
           })()}
@@ -249,11 +280,17 @@ export default function NewPurchaseOrder({
         <button 
           type="submit" 
           id="btn-submit-new-po"
-          className="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-lg py-2 shadow-sm transition"
+          className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-500/20 hover:shadow-xl transition-all transform hover:-translate-y-1 active:scale-95 text-base flex items-center justify-center gap-2"
         >
-          Issue & Authorize Requisition
+          <FilePlus2 size={20} /> Issue & Authorize Requisition
         </button>
       </form>
+      
+      <style dangerouslySetInnerHTML={{__html: `
+        .animate-spin-slow {
+          animation: spin 4s linear infinite;
+        }
+      `}} />
     </div>
   );
 }

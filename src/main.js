@@ -3,6 +3,7 @@ import { renderBottomNav } from './components/layout/bottom-nav.js';
 import { renderDashboard } from './components/erp/dashboard.js';
 import { renderSettings } from './components/erp/settings.js';
 import { renderAuth } from './components/auth/auth.js';
+import { mountReactInventory, unmountReactInventory } from './components/erp/inventory-bridge.tsx';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initially render Auth
@@ -39,6 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabId = e.detail.tabId;
     const mainContent = document.getElementById('main-content');
     
+    // Clear React tree if moving away from inventory to prevent memory leaks and UI collisions
+    if (tabId !== 'inventory') {
+      unmountReactInventory();
+    }
+
     // Update active state in bottom nav
     renderBottomNav('bottom-nav-container', tabId);
 
@@ -47,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
       renderDashboard('main-content');
     } else if (tabId === 'settings') {
       renderSettings('main-content');
+    } else if (tabId === 'inventory') {
+      mainContent.innerHTML = ''; // clear out anything
+      mountReactInventory('main-content');
     } else {
       mainContent.innerHTML = `
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; opacity: 0; animation: fadeIn 0.3s forwards;">
