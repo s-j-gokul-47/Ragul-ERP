@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Package, 
-  AlertTriangle, 
-  Truck, 
-  Coins, 
-  Wifi, 
-  Battery, 
+import {
+  Package,
+  AlertTriangle,
+  Truck,
+  Coins,
+  Wifi,
+  Battery,
   MonitorCheck,
   Compass,
   Briefcase
 } from 'lucide-react';
 
 // Import Types
-import { 
-  InventoryItem, 
-  Warehouse, 
-  CustomerOrder, 
-  PurchaseOrder, 
-  Supplier, 
-  StockAdjustment, 
-  Expense, 
-  AccountsReceivable 
+import {
+  InventoryItem,
+  Warehouse,
+  CustomerOrder,
+  PurchaseOrder,
+  Supplier,
+  StockAdjustment,
+  Expense,
+  AccountsReceivable
 } from './types';
 
 // Import datasets
-import { 
-  DEFAULT_ITEMS, 
-  DEFAULT_WAREHOUSES, 
-  DEFAULT_CUSTOMER_ORDERS, 
-  DEFAULT_PURCHASE_ORDERS, 
-  DEFAULT_SUPPLIERS, 
-  DEFAULT_ADJUSTMENTS, 
-  DEFAULT_EXPENSES, 
-  DEFAULT_RECEIVABLES 
+import {
+  DEFAULT_ITEMS,
+  DEFAULT_WAREHOUSES,
+  DEFAULT_CUSTOMER_ORDERS,
+  DEFAULT_PURCHASE_ORDERS,
+  DEFAULT_SUPPLIERS,
+  DEFAULT_ADJUSTMENTS,
+  DEFAULT_EXPENSES,
+  DEFAULT_RECEIVABLES
 } from './data';
 
 // Import 16 Mobile Screen components
@@ -57,24 +57,24 @@ const SCREENS = [
   // Operations Center
   { name: 'Dashboard', group: 'Operations Center', desc: 'Central performance counters, KPI widgets, and actions' },
   { name: 'Profile & Settings', group: 'Operations Center', desc: 'Identity profile, default currency configuration' },
-  
+
   // Logistics & Inventory
   { name: 'Inventory Management', group: 'Logistics & Inventory', desc: 'Manage central product catalog list, filters, and prices' },
   { name: 'Warehouse Locations', group: 'Logistics & Inventory', desc: 'Capacity trackers, zone layout maps, geo nodes' },
   { name: 'Stock Alerts', group: 'Logistics & Inventory', desc: 'Critical supply limits, dynamic replenishment guides' },
   { name: 'Item Details', group: 'Logistics & Inventory', desc: 'Deep dive SKU stats, profit margins, stock trends' },
   { name: 'Stock Adjustments', group: 'Logistics & Inventory', desc: 'Log manual counts audit discrepancies, material scrap' },
-  
+
   // Acquisitions Pipeline
   { name: 'Purchase Orders', group: 'Acquisitions Pipeline', desc: 'Active pipeline PO lists, pricing, expected dates' },
   { name: 'PO Details', group: 'Acquisitions Pipeline', desc: 'Drill down purchase lists, dispatch check authorizations' },
   { name: 'New Purchase Orders', group: 'Acquisitions Pipeline', desc: 'Draft and compose a multi-line vendor PO' },
   { name: 'Suppliers', group: 'Acquisitions Pipeline', desc: 'Wholesale suppliers catalog directory, performance, ratings' },
-  
+
   // Fulfillment & Billing
   { name: 'Orders Management', group: 'Fulfillment & Billing', desc: 'Customer sales orders pipeline and fulfillment updates' },
   { name: 'Accounts Receivable', group: 'Fulfillment & Billing', desc: 'Outstanding customer invoice aging calendars, check receipts' },
-  
+
   // Treasury Core
   { name: 'Financial Overview', group: 'Treasury Core', desc: 'Cash flow metrics ledger, reserves check logs' },
   { name: 'Expense Tracking', group: 'Treasury Core', desc: 'Disbursements diary, categories, photo slip logs' },
@@ -131,7 +131,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row font-sans">
-      
+
       {/* LEFT SECTION: Main documentation design-spec sheet & Component Directory Mapping */}
       <div className="flex-1 p-6 md:p-8 space-y-6 md:border-r border-slate-800 xl:max-w-xl overflow-y-auto">
         <div>
@@ -174,7 +174,7 @@ export default function App() {
         {/* Mapped Directory index tree */}
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1 font-mono">16 Screens Code Directory</h3>
-          
+
           <div className="space-y-4">
             {['Operations Center', 'Logistics & Inventory', 'Acquisitions Pipeline', 'Fulfillment & Billing', 'Treasury Core'].map((group) => {
               const groupScreens = SCREENS.filter(s => s.group === group);
@@ -187,7 +187,7 @@ export default function App() {
                     {groupScreens.map((screen) => {
                       const isActive = activeScreen === screen.name;
                       return (
-                        <div 
+                        <div
                           key={screen.name}
                           onClick={() => {
                             setActiveScreen(screen.name);
@@ -198,11 +198,10 @@ export default function App() {
                               setSelectedPOId('PO-2026-015');
                             }
                           }}
-                          className={`p-3 rounded-xl border text-left cursor-pointer transition select-none flex flex-col justify-between ${
-                            isActive 
-                              ? 'bg-sky-950/40 border-sky-600 text-slate-50 shadow-sm shadow-sky-950' 
+                          className={`p-3 rounded-xl border text-left cursor-pointer transition select-none flex flex-col justify-between ${isActive
+                              ? 'bg-sky-950/40 border-sky-600 text-slate-50 shadow-sm shadow-sky-950'
                               : 'bg-slate-900/30 border-slate-800/70 text-slate-400 hover:bg-slate-900/60 hover:text-slate-200'
-                          }`}
+                            }`}
                         >
                           <div>
                             <p className="font-bold text-slate-200">{screen.name}</p>
@@ -242,7 +241,7 @@ export default function App() {
       {/* RIGHT SECTION: Bezelless Smart Device frame housing the Live Render Container */}
       <div className="flex-1 bg-slate-900 border-t md:border-t-0 border-slate-800 flex items-center justify-center p-4 md:p-8 overflow-y-auto">
         <div className="relative w-full max-w-[385px] bg-slate-950 border-[8px] border-slate-800 rounded-[45px] shadow-2xl shadow-black overflow-hidden flex flex-col aspect-[9/19] select-none min-h-[780px]">
-          
+
           {/* Internal Camera Sensor Island Pill (Dynamic Notch) */}
           <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-28 h-5.5 bg-black rounded-full z-50 flex items-center justify-center">
             <div className="w-2.5 h-2.5 bg-slate-900 rounded-full mr-2" />
@@ -261,11 +260,11 @@ export default function App() {
           </div>
 
           {/* Active mobile viewport canvas wrapper (scroll containment) */}
-          <div className="flex-1 bg-white text-slate-900 overflow-y-auto p-4 relative font-sans scrollbar-thin">
-            
+          <div className="flex-1 bg-slate-950 text-slate-900 overflow-y-auto relative font-sans scrollbar-thin">
+
             {/* Standard React router style switcher depending on selected screen */}
             {activeScreen === 'Dashboard' && (
-              <Dashboard 
+              <Dashboard
                 items={items}
                 purchaseOrders={purchaseOrders}
                 customerOrders={customerOrders}
@@ -277,7 +276,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Inventory Management' && (
-              <InventoryManagement 
+              <InventoryManagement
                 items={items}
                 setItems={setItems}
                 warehouses={warehouses}
@@ -288,7 +287,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Profile & Settings' && (
-              <ProfileSettings 
+              <ProfileSettings
                 onResetData={handleResetDemoData}
                 currency={currency}
                 setCurrency={setCurrency}
@@ -296,7 +295,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Orders Management' && (
-              <OrdersManagement 
+              <OrdersManagement
                 customerOrders={customerOrders}
                 setCustomerOrders={setCustomerOrders}
                 items={items}
@@ -306,7 +305,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Purchase Orders' && (
-              <PurchaseOrders 
+              <PurchaseOrders
                 purchaseOrders={purchaseOrders}
                 setSelectedPOId={setSelectedPOId}
                 setActiveScreen={setActiveScreen}
@@ -314,7 +313,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Stock Adjustments' && (
-              <StockAdjustments 
+              <StockAdjustments
                 adjustments={adjustments}
                 setAdjustments={setAdjustments}
                 items={items}
@@ -323,14 +322,14 @@ export default function App() {
             )}
 
             {activeScreen === 'Suppliers' && (
-              <Suppliers 
+              <Suppliers
                 suppliers={suppliers}
                 setSuppliers={setSuppliers}
               />
             )}
 
             {activeScreen === 'PO Details' && (
-              <PODetails 
+              <PODetails
                 selectedPOId={selectedPOId}
                 purchaseOrders={purchaseOrders}
                 setPurchaseOrders={setPurchaseOrders}
@@ -341,7 +340,7 @@ export default function App() {
             )}
 
             {activeScreen === 'New Purchase Orders' && (
-              <NewPurchaseOrder 
+              <NewPurchaseOrder
                 suppliers={suppliers}
                 items={items}
                 setPurchaseOrders={setPurchaseOrders}
@@ -350,7 +349,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Warehouse Locations' && (
-              <WarehouseLocations 
+              <WarehouseLocations
                 warehouses={warehouses}
                 setWarehouses={setWarehouses}
                 items={items}
@@ -358,7 +357,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Stock Alerts' && (
-              <StockAlerts 
+              <StockAlerts
                 items={items}
                 warehouses={warehouses}
                 setActiveScreen={setActiveScreen}
@@ -366,7 +365,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Item Details' && (
-              <ItemDetails 
+              <ItemDetails
                 selectedItemId={selectedItemId}
                 items={items}
                 warehouses={warehouses}
@@ -376,7 +375,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Financial Overview' && (
-              <FinancialOverview 
+              <FinancialOverview
                 expenses={expenses}
                 receivables={receivables}
                 currency={currency}
@@ -385,7 +384,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Expense Tracking' && (
-              <ExpenseTracking 
+              <ExpenseTracking
                 expenses={expenses}
                 setExpenses={setExpenses}
                 currency={currency}
@@ -393,7 +392,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Accounts Receivable' && (
-              <AccountsReceivableComponent 
+              <AccountsReceivableComponent
                 receivables={receivables}
                 setReceivables={setReceivables}
                 currency={currency}
@@ -401,7 +400,7 @@ export default function App() {
             )}
 
             {activeScreen === 'Financial Analytics' && (
-              <FinancialAnalytics 
+              <FinancialAnalytics
                 expenses={expenses}
                 receivables={receivables}
                 currency={currency}
@@ -412,56 +411,51 @@ export default function App() {
 
           {/* Unified Navigation Bottom Bar inside mobile simulator */}
           <div className="bg-slate-900 text-white py-2 px-3 border-t border-slate-800 flex justify-around items-center z-40">
-            <button 
+            <button
               id="tab-dashboard"
               onClick={() => setActiveScreen('Dashboard')}
-              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${
-                activeScreen === 'Dashboard' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
-              }`}
+              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${activeScreen === 'Dashboard' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
+                }`}
             >
               <Briefcase size={15} />
               <span className="text-[8px] mt-0.5">Core</span>
             </button>
 
-            <button 
+            <button
               id="tab-inventory"
               onClick={() => setActiveScreen('Inventory Management')}
-              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${
-                activeScreen === 'Inventory Management' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
-              }`}
+              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${activeScreen === 'Inventory Management' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
+                }`}
             >
               <Package size={15} />
               <span className="text-[8px] mt-0.5">Stock</span>
             </button>
 
-            <button 
+            <button
               id="tab-po"
               onClick={() => setActiveScreen('Purchase Orders')}
-              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${
-                activeScreen === 'Purchase Orders' || activeScreen === 'PO Details' || activeScreen === 'New Purchase Orders' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
-              }`}
+              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${activeScreen === 'Purchase Orders' || activeScreen === 'PO Details' || activeScreen === 'New Purchase Orders' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
+                }`}
             >
               <Truck size={15} />
               <span className="text-[8px] mt-0.5">POs</span>
             </button>
 
-            <button 
+            <button
               id="tab-finance"
               onClick={() => setActiveScreen('Financial Overview')}
-              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${
-                activeScreen === 'Financial Overview' || activeScreen === 'Expense Tracking' || activeScreen === 'Financial Analytics' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
-              }`}
+              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${activeScreen === 'Financial Overview' || activeScreen === 'Expense Tracking' || activeScreen === 'Financial Analytics' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
+                }`}
             >
               <Coins size={15} />
               <span className="text-[8px] mt-0.5">Treasury</span>
             </button>
 
-            <button 
+            <button
               id="tab-alerts"
               onClick={() => setActiveScreen('Stock Alerts')}
-              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter relative ${
-                activeScreen === 'Stock Alerts' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
-              }`}
+              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter relative ${activeScreen === 'Stock Alerts' ? 'text-sky-400 font-bold' : 'text-slate-400 hover:text-white transition'
+                }`}
             >
               <AlertTriangle size={15} />
               <span className="text-[8px] mt-0.5">Alerts</span>
