@@ -100,10 +100,10 @@ export default function InventoryManagement({
 
   // Helper for Category Icons
   const getCategoryIcon = (category: string) => {
-    if (category.includes('Processor') || category.includes('CPU')) return <Cpu size={18} />;
-    if (category.includes('Graphic') || category.includes('GPU')) return <Monitor size={18} />;
-    if (category.includes('Memory') || category.includes('Storage')) return <Database size={18} />;
-    return <Layers size={18} />;
+    if (category.includes('Processor') || category.includes('CPU')) return <Cpu size={20} />;
+    if (category.includes('Graphic') || category.includes('GPU')) return <Monitor size={20} />;
+    if (category.includes('Memory') || category.includes('Storage')) return <Database size={20} />;
+    return <Layers size={20} />;
   };
 
   return (
@@ -216,11 +216,11 @@ export default function InventoryManagement({
                 </div>
 
                 {/* Center: Details */}
-                <div className="flex-1 min-w-0 pr-4">
-                  <h3 className="text-[15px] font-bold text-slate-200 truncate group-hover:text-sky-400 transition-colors">
+                <div className="flex-1 min-w-0 pr-4 text-center flex flex-col items-center">
+                  <h3 className="text-[15px] font-bold text-slate-200 truncate group-hover:text-sky-400 transition-colors max-w-full">
                     {item.name}
                   </h3>
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center justify-center gap-2 mt-1 max-w-full">
                     <span className="text-[11px] font-mono text-slate-500">{item.sku}</span>
                     <span className="w-1 h-1 rounded-full bg-slate-700"></span>
                     <span className="text-[11px] text-slate-500 truncate">{item.category}</span>
@@ -253,13 +253,7 @@ export default function InventoryManagement({
         )}
       </div>
 
-      {/* Floating Action Button (FAB) */}
-      <button
-        onClick={() => setShowAddModal(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-sky-500 hover:bg-sky-400 text-white rounded-full shadow-lg shadow-sky-500/30 flex items-center justify-center z-30 transition-transform hover:scale-105 active:scale-95"
-      >
-        <Plus size={24} strokeWidth={2.5} />
-      </button>
+
 
       {/* Slide-Up Add SKU Form */}
       {showAddModal && (
