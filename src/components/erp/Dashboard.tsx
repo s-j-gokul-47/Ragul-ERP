@@ -9,14 +9,16 @@ import {
   DollarSign, 
   Truck, 
   ChevronRight,
-  Bell
+  Bell,
+  FileText
 } from 'lucide-react';
-import { InventoryItem, PurchaseOrder, CustomerOrder } from '../../types';
+import { InventoryItem, PurchaseOrder, CustomerOrder, Invoice } from '../../types';
 
 interface DashboardProps {
   items: InventoryItem[];
   purchaseOrders: PurchaseOrder[];
   customerOrders: CustomerOrder[];
+  invoices: Invoice[];
   activeAlertsCount: number;
   setActiveScreen: (screen: string) => void;
   setSelectedItemId: (id: string) => void;
@@ -27,6 +29,7 @@ export default function Dashboard({
   items,
   purchaseOrders,
   customerOrders,
+  invoices,
   activeAlertsCount,
   setActiveScreen,
   setSelectedItemId,
@@ -152,14 +155,14 @@ export default function Dashboard({
           </button>
 
           <button 
-            id="btn-quick-supp"
-            onClick={() => setActiveScreen('Suppliers')}
+            id="btn-quick-inv"
+            onClick={() => setActiveScreen('Invoice Management')}
             className="flex flex-col items-center justify-center bg-slate-50 border border-slate-100 p-2.5 rounded-xl hover:bg-slate-100 transition text-center"
           >
-            <div className="p-2 bg-teal-500 text-white rounded-lg mb-1 shadow-sm">
-              <Truck size={16} />
+            <div className="p-2 bg-indigo-500 text-white rounded-lg mb-1 shadow-sm">
+              <FileText size={16} />
             </div>
-            <span className="text-[10px] font-medium text-slate-700 leading-tight">Suppliers</span>
+            <span className="text-[10px] font-medium text-slate-700 leading-tight">Invoices</span>
           </button>
         </div>
       </div>
@@ -250,6 +253,45 @@ export default function Dashboard({
                   ord.status === 'Shipped' ? 'bg-indigo-50 text-indigo-700' : 'bg-amber-50 text-amber-700'
                 }`}>
                   {ord.status}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent Invoices Module */}
+      <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs mt-4">
+        <div className="flex justify-between items-center mb-3">
+          <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider font-mono">Recent Invoices</h3>
+          <button 
+            onClick={() => setActiveScreen('Invoice Management')}
+            className="text-xs text-sky-600 font-semibold"
+          >
+            Expand All →
+          </button>
+        </div>
+        <div className="divide-y divide-slate-50">
+          {invoices.slice(0, 3).map((inv) => (
+            <div 
+              key={inv.id} 
+              id={`recent-inv-${inv.id}`}
+              onClick={() => setActiveScreen('Invoice Management')}
+              className="py-2.5 flex justify-between items-center cursor-pointer hover:bg-slate-50 rounded px-1 -mx-1 transition"
+            >
+              <div className="space-y-0.5">
+                <p className="text-xs font-bold text-slate-800">{inv.id}</p>
+                <p className="text-[11px] text-slate-500 truncate max-w-[170px]">{inv.clientName}</p>
+                <p className="text-[10px] text-slate-400 font-mono">Due: {inv.dueDate}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs font-bold text-slate-800">${inv.amount.toFixed(2)}</p>
+                <span className={`inline-block text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                  inv.status === 'Paid' ? 'bg-emerald-50 text-emerald-700' :
+                  inv.status === 'Overdue' ? 'bg-rose-50 text-rose-700' :
+                  inv.status === 'Sent' ? 'bg-indigo-50 text-indigo-700' : 'bg-slate-50 text-slate-700'
+                }`}>
+                  {inv.status}
                 </span>
               </div>
             </div>

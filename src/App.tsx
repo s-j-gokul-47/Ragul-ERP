@@ -20,7 +20,8 @@ import {
   Supplier,
   StockAdjustment,
   Expense,
-  AccountsReceivable
+  AccountsReceivable,
+  Invoice
 } from './types';
 
 // Import datasets
@@ -32,7 +33,8 @@ import {
   DEFAULT_SUPPLIERS,
   DEFAULT_ADJUSTMENTS,
   DEFAULT_EXPENSES,
-  DEFAULT_RECEIVABLES
+  DEFAULT_RECEIVABLES,
+  DEFAULT_INVOICES
 } from './data';
 
 // Import 16 Mobile Screen components
@@ -52,6 +54,7 @@ import FinancialOverview from './components/erp/FinancialOverview';
 import ExpenseTracking from './components/erp/ExpenseTracking';
 import AccountsReceivableComponent from './components/erp/AccountsReceivable';
 import FinancialAnalytics from './components/erp/FinancialAnalytics';
+import InvoiceManagement from './components/erp/InvoiceManagement';
 
 const SCREENS = [
   // Operations Center
@@ -74,6 +77,7 @@ const SCREENS = [
   // Fulfillment & Billing
   { name: 'Orders Management', group: 'Fulfillment & Billing', desc: 'Customer sales orders pipeline and fulfillment updates' },
   { name: 'Accounts Receivable', group: 'Fulfillment & Billing', desc: 'Outstanding customer invoice aging calendars, check receipts' },
+  { name: 'Invoice Management', group: 'Fulfillment & Billing', desc: 'Manage client invoices and pending payments' },
 
   // Treasury Core
   { name: 'Financial Overview', group: 'Treasury Core', desc: 'Cash flow metrics ledger, reserves check logs' },
@@ -91,6 +95,8 @@ export default function App() {
   const [adjustments, setAdjustments] = useState<StockAdjustment[]>(DEFAULT_ADJUSTMENTS);
   const [expenses, setExpenses] = useState<Expense[]>(DEFAULT_EXPENSES);
   const [receivables, setReceivables] = useState<AccountsReceivable[]>(DEFAULT_RECEIVABLES);
+  const [invoices, setInvoices] = useState<Invoice[]>(DEFAULT_INVOICES);
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
 
   // Layout configs
   const [activeScreen, setActiveScreen] = useState<string>('Dashboard');
@@ -122,8 +128,10 @@ export default function App() {
     setAdjustments(DEFAULT_ADJUSTMENTS);
     setExpenses(DEFAULT_EXPENSES);
     setReceivables(DEFAULT_RECEIVABLES);
+    setInvoices(DEFAULT_INVOICES);
     setSelectedItemId('item-1');
     setSelectedPOId('PO-2026-015');
+    setSelectedInvoiceId(null);
     setActiveScreen('Dashboard');
   };
 
@@ -268,6 +276,7 @@ export default function App() {
                 items={items}
                 purchaseOrders={purchaseOrders}
                 customerOrders={customerOrders}
+                invoices={invoices}
                 activeAlertsCount={activeAlertsCount}
                 setActiveScreen={setActiveScreen}
                 setSelectedItemId={setSelectedItemId}
@@ -404,6 +413,14 @@ export default function App() {
                 expenses={expenses}
                 receivables={receivables}
                 currency={currency}
+              />
+            )}
+
+            {activeScreen === 'Invoice Management' && (
+              <InvoiceManagement
+                invoices={invoices}
+                setSelectedInvoiceId={setSelectedInvoiceId}
+                setActiveScreen={setActiveScreen}
               />
             )}
 

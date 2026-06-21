@@ -35,19 +35,19 @@ export function renderDashboard(containerId) {
       <section>
         <h3 class="section-title">Quick Actions <i class="ri-more-2-line text-muted"></i></h3>
         <div class="quick-actions no-scrollbar">
-          <button class="action-btn">
+          <button class="action-btn" id="qa-invoice">
             <div class="action-icon"><i class="ri-file-add-line"></i></div>
             <span class="action-label">Invoice</span>
           </button>
-          <button class="action-btn">
+          <button class="action-btn" id="qa-client">
             <div class="action-icon"><i class="ri-user-add-line"></i></div>
             <span class="action-label">Client</span>
           </button>
-          <button class="action-btn">
+          <button class="action-btn" id="qa-shipment">
             <div class="action-icon"><i class="ri-truck-line"></i></div>
             <span class="action-label">Shipment</span>
           </button>
-          <button class="action-btn">
+          <button class="action-btn" id="qa-report">
             <div class="action-icon"><i class="ri-pie-chart-line"></i></div>
             <span class="action-label">Report</span>
           </button>
@@ -87,4 +87,22 @@ export function renderDashboard(containerId) {
 
     </div>
   `;
+
+  // Add event listeners to Quick Action buttons
+  const quickActions = [
+    { id: 'invoice', tabId: 'invoice' },
+    { id: 'client', tabId: 'crm' },
+    { id: 'shipment', tabId: 'shipment' },
+    { id: 'report', tabId: 'report' }
+  ];
+
+  quickActions.forEach(action => {
+    const btn = document.getElementById(`qa-${action.id}`);
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const event = new CustomEvent('tab-change', { detail: { tabId: action.tabId } });
+        window.dispatchEvent(event);
+      });
+    }
+  });
 }

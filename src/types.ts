@@ -109,3 +109,19 @@ export interface AccountsReceivable {
   status: ReceivableStatus;
   termDays: number;
 }
+
+export type InvoiceStatus = 'Draft' | 'Sent' | 'Paid' | 'Overdue' | 'Cancelled';
+
+export interface Invoice {
+  id: string;
+  clientName: string;
+  issueDate: string;
+  dueDate: string;
+  amount: number;
+  status: InvoiceStatus;
+  items: Array<{
+    description: string;
+    qty: number;
+    price: number;
+  }>;
+}

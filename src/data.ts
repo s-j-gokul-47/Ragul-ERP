@@ -275,3 +275,52 @@ export const DEFAULT_RECEIVABLES: AccountsReceivable[] = [
   { id: 'REC-088', customerName: 'Detroit Automotive Systems', dueDate: '2026-06-15', amount: 4500.00, amountPaid: 0.00, status: 'Overdue', termDays: 15 },
   { id: 'REC-087', customerName: 'Solder Systems International', dueDate: '2026-05-20', amount: 8200.00, amountPaid: 8200.00, status: 'Paid', termDays: 30 }
 ];
+
+export const DEFAULT_INVOICES: import('./types').Invoice[] = [
+  {
+    id: 'INV-2026-041',
+    clientName: 'AeroSpace Design Partners',
+    issueDate: '2026-06-11',
+    dueDate: '2026-07-11',
+    amount: 6470.00,
+    status: 'Sent',
+    items: [
+      { description: 'Intel Core i7-12700K Processor', qty: 10, price: 389.00 },
+      { description: 'Corsair Vengeance 32GB DDR5', qty: 20, price: 129.00 }
+    ]
+  },
+  {
+    id: 'INV-2026-040',
+    clientName: 'BioMed Diagnostics Inc',
+    issueDate: '2026-06-10',
+    dueDate: '2026-07-10',
+    amount: 4950.00,
+    status: 'Draft',
+    items: [
+      { description: 'Samsung 980 Pro 1TB M.2 NVMe SSD', qty: 50, price: 99.00 }
+    ]
+  },
+  {
+    id: 'INV-2026-039',
+    clientName: 'Cascade Quantum Solutions',
+    issueDate: '2026-05-08',
+    dueDate: '2026-06-08',
+    amount: 6348.00,
+    status: 'Paid',
+    items: [
+      { description: 'NVIDIA GeForce RTX 4070 Dual OC', qty: 8, price: 599.00 },
+      { description: 'Intel Core i7-12700K Processor', qty: 4, price: 389.00 }
+    ]
+  },
+  {
+    id: 'INV-2026-038',
+    clientName: 'Detroit Automotive Systems',
+    issueDate: '2026-05-15',
+    dueDate: '2026-06-15',
+    amount: 4500.00,
+    status: 'Overdue',
+    items: [
+      { description: 'Structural Aluminum Bracket 50x50', qty: 1000, price: 4.50 }
+    ]
+  }
+];
