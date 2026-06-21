@@ -8,22 +8,22 @@ export function renderDashboard(containerId) {
       <!-- Metrics Overview -->
       <section>
         <div class="metrics-grid">
-          <div class="metric-card">
+          <div class="metric-card danger">
             <div class="metric-icon"><i class="ri-wallet-3-line"></i></div>
             <div class="metric-value">$24,500</div>
             <div class="metric-label">Total Revenue</div>
           </div>
-          <div class="metric-card success">
+          <div class="metric-card">
             <div class="metric-icon"><i class="ri-shopping-cart-2-line"></i></div>
             <div class="metric-value">142</div>
             <div class="metric-label">New Orders</div>
           </div>
-          <div class="metric-card warning">
+          <div class="metric-card success">
             <div class="metric-icon"><i class="ri-box-3-line"></i></div>
             <div class="metric-value">18</div>
             <div class="metric-label">Low Stock Items</div>
           </div>
-          <div class="metric-card">
+          <div class="metric-card warning">
             <div class="metric-icon"><i class="ri-group-line"></i></div>
             <div class="metric-value">1,240</div>
             <div class="metric-label">Active Clients</div>
