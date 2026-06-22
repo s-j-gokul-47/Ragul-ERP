@@ -10,7 +10,8 @@ import {
   Truck, 
   ChevronRight,
   Bell,
-  FileText
+  FileText,
+  CreditCard
 } from 'lucide-react';
 import { InventoryItem, PurchaseOrder, CustomerOrder, Invoice } from '../../types';
 
@@ -164,6 +165,57 @@ export default function Dashboard({
             </div>
             <span className="text-[10px] font-medium text-slate-700 leading-tight">Invoices</span>
           </button>
+        </div>
+      </div>
+
+      {/* Quick Payment Module */}
+      <div className="bg-gradient-to-br from-indigo-50 to-white p-4 rounded-xl border border-indigo-100 shadow-sm relative overflow-hidden mt-4">
+        <div className="absolute -top-4 -right-4 p-4 opacity-5 text-indigo-600">
+          <CreditCard size={100} />
+        </div>
+        <div className="relative z-10">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-xs font-bold text-indigo-900 uppercase tracking-wider font-mono flex items-center gap-1.5">
+              <CreditCard size={14} className="text-indigo-600" />
+              Quick Payment
+            </h3>
+          </div>
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase">Amount</label>
+                <div className="relative mt-1">
+                  <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                    <DollarSign size={14} className="text-slate-400" />
+                  </div>
+                  <input 
+                    type="number" 
+                    placeholder="0.00" 
+                    className="w-full pl-7 pr-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono bg-white"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase">Method</label>
+                <select className="mt-1 w-full px-2 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-700">
+                  <option>Credit Card</option>
+                  <option>Bank Transfer</option>
+                  <option>Cash</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="text-[10px] font-bold text-slate-500 uppercase">Reference / Invoice #</label>
+              <input 
+                type="text" 
+                placeholder="INV-..." 
+                className="mt-1 w-full px-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+              />
+            </div>
+            <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1.5 shadow-sm mt-1">
+              Process Payment
+            </button>
+          </div>
         </div>
       </div>
 

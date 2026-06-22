@@ -51,6 +51,10 @@ export function renderDashboard(containerId) {
             <div class="action-icon"><i class="ri-pie-chart-line"></i></div>
             <span class="action-label">Report</span>
           </button>
+          <button class="action-btn" id="qa-payment">
+            <div class="action-icon"><i class="ri-bank-card-line"></i></div>
+            <span class="action-label">Payment</span>
+          </button>
         </div>
       </section>
 
@@ -93,7 +97,8 @@ export function renderDashboard(containerId) {
     { id: 'invoice', tabId: 'invoice' },
     { id: 'client', tabId: 'crm' },
     { id: 'shipment', tabId: 'shipment' },
-    { id: 'report', tabId: 'report' }
+    { id: 'report', tabId: 'report' },
+    { id: 'payment', tabId: 'payment' }
   ];
 
   quickActions.forEach(action => {
