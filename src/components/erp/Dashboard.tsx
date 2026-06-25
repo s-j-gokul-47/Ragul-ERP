@@ -36,6 +36,8 @@ export default function Dashboard({
   setSelectedItemId,
   setSelectedPOId,
 }: DashboardProps) {
+  const [showNotifications, setShowNotifications] = React.useState(false);
+
   // Calculations for KPI widgets
   const totalStockValuation = items.reduce((acc, item) => acc + (item.qty * item.cost), 0);
   const activePOs = purchaseOrders.filter(po => po.status === 'Sent' || po.status === 'Partially Received').length;
@@ -45,9 +47,9 @@ export default function Dashboard({
   const lowStockItems = items.filter(item => item.qty <= item.minQty);
 
   return (
-    <div className="space-y-5 pb-6">
+    <div className="space-y-5 pb-6 p-4 pt-4">
       {/* Dynamic Mobile Header */}
-      <div className="flex justify-between items-center bg-slate-900 text-white p-4 -mx-4 -mt-4 shadow-md rounded-b-2xl border-b border-sky-950">
+      <div className="flex justify-between items-center bg-slate-900 text-white p-4 -mx-4 -mt-4 shadow-md rounded-b-2xl border-b border-sky-950 relative z-50">
         <div>
           <span className="text-xs text-sky-400 font-mono tracking-wider">ENTERPRISE ERP • CLOUD LIVE</span>
           <h1 className="text-xl font-bold text-slate-100 flex items-center gap-1.5">
@@ -56,7 +58,7 @@ export default function Dashboard({
         </div>
         <div className="relative">
           <button 
-            onClick={() => setActiveScreen('Stock Alerts')}
+            onClick={() => setShowNotifications(!showNotifications)}
             className="p-2 bg-slate-800 rounded-full border border-slate-700 relative text-slate-300 hover:text-white transition"
           >
             <Bell size={18} />
@@ -66,6 +68,55 @@ export default function Dashboard({
               </span>
             )}
           </button>
+          
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 z-50 overflow-hidden">
+              <div className="bg-slate-50 p-3 border-b border-slate-200 flex justify-between items-center">
+                <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider font-mono">Notifications</h3>
+                <button onClick={() => setShowNotifications(false)} className="text-slate-400 hover:text-slate-600 font-bold text-lg leading-none">&times;</button>
+              </div>
+              <div className="max-h-64 overflow-y-auto p-2 space-y-2 bg-white">
+                {lowStockItems.length > 0 ? (
+                  lowStockItems.map(item => (
+                    <div 
+                      key={item.id} 
+                      className="p-2.5 bg-rose-50 border border-rose-100 rounded-lg cursor-pointer hover:bg-rose-100 transition"
+                      onClick={() => {
+                        setShowNotifications(false);
+                        setSelectedItemId(item.id);
+                        setActiveScreen('Item Details');
+                      }}
+                    >
+                      <div className="flex items-start gap-2">
+                        <AlertTriangle size={14} className="text-rose-500 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-[11px] font-bold text-rose-800 leading-tight">{item.name}</p>
+                          <p className="text-[10px] text-rose-600 mt-0.5">Critical low stock: {item.qty} units remaining</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-4 text-center text-slate-500 text-xs font-medium">
+                    You're all caught up!
+                  </div>
+                )}
+              </div>
+              {lowStockItems.length > 0 && (
+                <div className="p-2 bg-slate-50 border-t border-slate-100">
+                  <button 
+                    onClick={() => {
+                      setShowNotifications(false);
+                      setActiveScreen('Stock Alerts');
+                    }}
+                    className="w-full text-center text-[10px] font-bold text-sky-600 hover:text-sky-700 transition"
+                  >
+                    View All Stock Alerts →
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
