@@ -231,6 +231,32 @@ export default function ItemDetails({
             </div>
           </div>
 
+          {/* Procurement Strategy */}
+          <div className="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden group">
+            <div className="absolute -right-4 -bottom-4 opacity-10 transform group-hover:scale-110 transition-transform duration-500">
+              <Box size={100} />
+            </div>
+            <div className="relative z-10 flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Box size={16} className="text-amber-100" />
+                  <span className="font-bold text-sm">Procurement</span>
+                </div>
+                <p className="text-[11px] text-amber-100 leading-tight">Supply chain strategy</p>
+              </div>
+              <div className="flex flex-col gap-1 items-end">
+                <span className="inline-block font-bold text-[10px] px-2.5 py-1 rounded-lg border backdrop-blur-md bg-white/20 border-white/30 text-white">
+                  {item.procurementType === 'MTS' ? 'MAKE TO STOCK' : item.procurementType === 'MTO' ? 'MAKE TO ORDER' : 'BUY'}
+                </span>
+                {item.procureOnDemand && (
+                  <span className="inline-block font-bold text-[9px] px-2.5 py-0.5 rounded-lg border backdrop-blur-md bg-white/10 border-white/20 text-white/90">
+                    PROCURE ON DEMAND
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Warehouse and supplier linked cards */}
           <div className="bg-white p-5 rounded-3xl border border-slate-200/60 shadow-sm space-y-5">
             <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-3 flex items-center gap-2">

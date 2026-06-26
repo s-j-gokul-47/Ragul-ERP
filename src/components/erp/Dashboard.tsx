@@ -13,7 +13,7 @@ import {
   FileText,
   CreditCard
 } from 'lucide-react';
-import { InventoryItem, PurchaseOrder, CustomerOrder, Invoice } from '../../types';
+import { InventoryItem, PurchaseOrder, CustomerOrder, Invoice, ManufacturingOrder } from '../../types';
 
 interface DashboardProps {
   items: InventoryItem[];
@@ -21,6 +21,7 @@ interface DashboardProps {
   customerOrders: CustomerOrder[];
   invoices: Invoice[];
   activeAlertsCount: number;
+  manufacturingOrders?: ManufacturingOrder[];
   setActiveScreen: (screen: string) => void;
   setSelectedItemId: (id: string) => void;
   setSelectedPOId: (id: string) => void;
@@ -32,6 +33,7 @@ export default function Dashboard({
   customerOrders,
   invoices,
   activeAlertsCount,
+  manufacturingOrders = [],
   setActiveScreen,
   setSelectedItemId,
   setSelectedPOId,
@@ -42,6 +44,7 @@ export default function Dashboard({
   const totalStockValuation = items.reduce((acc, item) => acc + (item.qty * item.cost), 0);
   const activePOs = purchaseOrders.filter(po => po.status === 'Sent' || po.status === 'Partially Received').length;
   const pendingCustomerOrders = customerOrders.filter(co => co.status === 'Pending').length;
+  const activeMOs = manufacturingOrders.filter(mo => mo.status === 'Draft' || mo.status === 'In Progress').length;
   
   // Recent transactions (combine custom order and PO list)
   const lowStockItems = items.filter(item => item.qty <= item.minQty);
@@ -144,15 +147,15 @@ export default function Dashboard({
           <span className="text-[10px] text-amber-600 font-medium">Requires dispatch</span>
         </div>
 
-        <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs">
+        <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs cursor-pointer" onClick={() => setActiveScreen('Manufacturing Orders')}>
           <div className="flex justify-between items-start mb-1 text-slate-400">
-            <span className="text-xs font-medium">Open Vendor POs</span>
-            <div className="p-1 bg-teal-50 rounded text-teal-600">
-              <Truck size={14} />
+            <span className="text-xs font-medium">Active MOs</span>
+            <div className="p-1 bg-amber-50 rounded text-amber-600">
+              <TrendingUp size={14} />
             </div>
           </div>
-          <p className="text-lg font-bold text-slate-800">{activePOs} Active</p>
-          <span className="text-[10px] text-teal-600 font-medium font-mono">Incoming items</span>
+          <p className="text-lg font-bold text-slate-800">{activeMOs} Orders</p>
+          <span className="text-[10px] text-amber-600 font-medium">In production</span>
         </div>
 
         <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs">
@@ -185,14 +188,14 @@ export default function Dashboard({
           </button>
 
           <button 
-            id="btn-quick-adj"
-            onClick={() => setActiveScreen('Stock Adjustments')}
+            id="btn-quick-new-mo"
+            onClick={() => setActiveScreen('Manufacturing Orders')}
             className="flex flex-col items-center justify-center bg-slate-50 border border-slate-100 p-2.5 rounded-xl hover:bg-slate-100 transition text-center"
           >
-            <div className="p-2 bg-indigo-500 text-white rounded-lg mb-1 shadow-sm">
-              <Sliders size={16} />
+            <div className="p-2 bg-amber-500 text-white rounded-lg mb-1 shadow-sm">
+              <Plus size={16} />
             </div>
-            <span className="text-[10px] font-medium text-slate-700 leading-tight">Adjust Stock</span>
+            <span className="text-[10px] font-medium text-slate-700 leading-tight">New MO</span>
           </button>
 
           <button 

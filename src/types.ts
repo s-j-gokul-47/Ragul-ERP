@@ -1,5 +1,8 @@
 export type OrderStatus = 'Pending' | 'Shipped' | 'Paid' | 'Cancelled';
 export type POStatus = 'Draft' | 'Sent' | 'Received' | 'Partially Received';
+export type ProcurementStrategy = 'MTS' | 'MTO';
+export type ProcurementType = 'Purchase' | 'Manufacturing';
+export type MOStatus = 'Draft' | 'Confirmed' | 'In Progress' | 'Done';
 export type AdjustmentType = 'Wastage' | 'Audit' | 'Damage' | 'Re-count' | 'Location Move';
 export type ExpenseCategory = 'Freight' | 'Logistics' | 'Wastage' | 'Packaging' | 'Rent' | 'Miscellaneous';
 export type ReceivableStatus = 'Paid' | 'Overdue' | 'Open';
@@ -9,7 +12,8 @@ export interface InventoryItem {
   sku: string;
   name: string;
   category: string;
-  qty: number;
+  qty: number; // On Hand Quantity
+  reservedQty?: number; // Added for reserved stock
   minQty: number; // For low stock alerts
   price: number; // Selling price
   cost: number;  // Purchase cost
@@ -21,6 +25,35 @@ export interface InventoryItem {
   shelf: string;
   description: string;
   tags: string[];
+
+  // Procurement Automation
+  procureOnDemand?: boolean;
+  procurementType?: ProcurementType;
+  procurementStrategy?: ProcurementStrategy;
+  bomId?: string;
+}
+
+export interface BillOfMaterial {
+  id: string;
+  productId: string;
+  components: Array<{
+    itemId: string;
+    qty: number;
+  }>;
+  operations: Array<{
+    name: string;
+    duration: number; // in minutes
+  }>;
+}
+
+export interface ManufacturingOrder {
+  id: string;
+  finishedProductId: string;
+  quantity: number;
+  status: MOStatus;
+  orderDate: string;
+  assignee: string;
+  workCenter: string;
 }
 
 export interface Warehouse {

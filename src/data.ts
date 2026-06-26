@@ -6,7 +6,9 @@ import {
   Supplier, 
   StockAdjustment, 
   Expense, 
-  AccountsReceivable 
+  AccountsReceivable,
+  BillOfMaterial,
+  ManufacturingOrder
 } from './types';
 
 export const DEFAULT_WAREHOUSES: Warehouse[] = [
@@ -29,6 +31,7 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     name: 'Intel Core i7-12700K Processor',
     category: 'Processors',
     qty: 124,
+    reservedQty: 10,
     minQty: 150, // Low stock!
     price: 389.00,
     cost: 290.00,
@@ -39,7 +42,10 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     zone: 'Zone A',
     shelf: 'Ais-4 / Row-B',
     description: '12th Gen Intel Core i7 desktop processor with golden sample wafer sorting, unlocked for overclocking.',
-    tags: ['Core Components', 'Hot Seller', 'High Cost']
+    tags: ['Core Components', 'Hot Seller', 'High Cost'],
+    procureOnDemand: true,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTS'
   },
   {
     id: 'item-2',
@@ -47,6 +53,7 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     name: 'NVIDIA GeForce RTX 4070 Dual OC',
     category: 'Graphics Cards',
     qty: 45,
+    reservedQty: 5,
     minQty: 50, // Low stock!
     price: 599.00,
     cost: 440.00,
@@ -57,7 +64,10 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     zone: 'Zone A',
     shelf: 'Ais-2 / Row-D',
     description: 'NVIDIA Ada Lovelace chip architecture, DLSS 3 frame generation, dual-axial high durability fans.',
-    tags: ['Core Components', 'Limited Allocation']
+    tags: ['Core Components', 'Limited Allocation'],
+    procureOnDemand: true,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTO'
   },
   {
     id: 'item-3',
@@ -65,6 +75,7 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     name: 'Corsair Vengeance 32GB DDR5 (2x16)',
     category: 'Memory',
     qty: 310,
+    reservedQty: 0,
     minQty: 100, // Healthy
     price: 129.00,
     cost: 88.00,
@@ -75,7 +86,10 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     zone: 'Zone B',
     shelf: 'Ais-12 / Row-C',
     description: 'Vengeance performance heatspreader DDR5 modules designed for extreme speeds with thermal headroom monitoring.',
-    tags: ['Consumable Accessories', 'High Margin']
+    tags: ['Consumable Accessories', 'High Margin'],
+    procureOnDemand: false,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTS'
   },
   {
     id: 'item-4',
@@ -83,6 +97,7 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     name: 'Samsung 980 Pro 1TB M.2 NVMe SSD',
     category: 'Storage',
     qty: 240,
+    reservedQty: 0,
     minQty: 200, // Healthy
     price: 99.00,
     cost: 65.00,
@@ -93,7 +108,10 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     zone: 'Zone B',
     shelf: 'Ais-11 / Row-A',
     description: 'PCIe Gen 4.0 interface, read speeds up to 7,000MB/s, nickel-coated controller with smart heat dissipation.',
-    tags: ['Core Components', 'Bulk Item']
+    tags: ['Core Components', 'Bulk Item'],
+    procureOnDemand: true,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTS'
   },
   {
     id: 'item-5',
@@ -101,6 +119,7 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     name: 'Structural Aluminum Bracket 50x50',
     category: 'Metal Works',
     qty: 1420,
+    reservedQty: 0,
     minQty: 500, // Healthy
     price: 4.50,
     cost: 1.80,
@@ -111,7 +130,10 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     zone: 'Zone C',
     shelf: 'Ais-1 / Row-Z',
     description: 'Heavily anodized aluminum alloy bracket, engineered for structural load applications.',
-    tags: ['Raw Materials', 'Medium Margin']
+    tags: ['Raw Materials', 'Medium Margin'],
+    procureOnDemand: false,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTS'
   },
   {
     id: 'item-6',
@@ -119,6 +141,7 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     name: '12 AWG Shielded Copper Wire (100m)',
     category: 'Cabling',
     qty: 12,
+    reservedQty: 0,
     minQty: 15, // Low stock!
     price: 145.00,
     cost: 92.00,
@@ -129,7 +152,99 @@ export const DEFAULT_ITEMS: InventoryItem[] = [
     zone: 'Zone C',
     shelf: 'Ais-8 / Row-E',
     description: 'High performance copper wire harness with moisture resistant outer sheath and premium braided isolation.',
-    tags: ['Raw Materials', 'Heavy Duty']
+    tags: ['Raw Materials', 'Heavy Duty'],
+    procureOnDemand: true,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTO'
+  },
+  {
+    id: 'item-7',
+    sku: 'FURN-WOOD-TAB',
+    name: 'Wooden Table',
+    category: 'Furniture',
+    qty: 5,
+    reservedQty: 0,
+    minQty: 10,
+    price: 250.00,
+    cost: 100.00,
+    unit: 'Units',
+    warehouseId: 'wh-1',
+    supplierId: '',
+    serialTracked: true,
+    zone: 'Zone D',
+    shelf: 'Ais-1 / Row-A',
+    description: 'Premium handcrafted wooden dining table.',
+    tags: ['Finished Goods', 'Furniture'],
+    procureOnDemand: true,
+    procurementType: 'Manufacturing',
+    procurementStrategy: 'MTO',
+    bomId: 'bom-1'
+  },
+  {
+    id: 'item-8',
+    sku: 'COMP-WOOD-LEG',
+    name: 'Wooden Legs',
+    category: 'Raw Materials',
+    qty: 100,
+    reservedQty: 40,
+    minQty: 50,
+    price: 15.00,
+    cost: 5.00,
+    unit: 'Units',
+    warehouseId: 'wh-2',
+    supplierId: 'sup-4',
+    serialTracked: false,
+    zone: 'Zone C',
+    shelf: 'Ais-2 / Row-A',
+    description: 'Sturdy wooden legs for furniture assembly.',
+    tags: ['Components', 'Furniture'],
+    procureOnDemand: true,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTS'
+  },
+  {
+    id: 'item-9',
+    sku: 'COMP-WOOD-TOP',
+    name: 'Wooden Top',
+    category: 'Raw Materials',
+    qty: 25,
+    reservedQty: 10,
+    minQty: 20,
+    price: 80.00,
+    cost: 40.00,
+    unit: 'Units',
+    warehouseId: 'wh-2',
+    supplierId: 'sup-4',
+    serialTracked: false,
+    zone: 'Zone C',
+    shelf: 'Ais-2 / Row-B',
+    description: 'Solid wood top surface for tables.',
+    tags: ['Components', 'Furniture'],
+    procureOnDemand: true,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTS'
+  },
+  {
+    id: 'item-10',
+    sku: 'COMP-SCREW-M8',
+    name: 'M8 Screws',
+    category: 'Raw Materials',
+    qty: 500,
+    reservedQty: 120,
+    minQty: 200,
+    price: 0.10,
+    cost: 0.02,
+    unit: 'Units',
+    warehouseId: 'wh-3',
+    supplierId: 'sup-2',
+    serialTracked: false,
+    zone: 'Zone C',
+    shelf: 'Ais-3 / Row-A',
+    description: 'Standard M8 screws for assembly.',
+    tags: ['Components', 'Hardware'],
+    procureOnDemand: false,
+    procurementType: 'Purchase',
+    procurementStrategy: 'MTS'
   }
 ];
 
@@ -322,5 +437,34 @@ export const DEFAULT_INVOICES: import('./types').Invoice[] = [
     items: [
       { description: 'Structural Aluminum Bracket 50x50', qty: 1000, price: 4.50 }
     ]
+  }
+];
+
+export const DEFAULT_BOMS: BillOfMaterial[] = [
+  {
+    id: 'bom-1',
+    productId: 'item-7', // Wooden Table
+    components: [
+      { itemId: 'item-8', qty: 4 }, // Wooden Legs
+      { itemId: 'item-9', qty: 1 }, // Wooden Top
+      { itemId: 'item-10', qty: 12 } // Screws
+    ],
+    operations: [
+      { name: 'Assembly', duration: 60 },
+      { name: 'Painting', duration: 30 },
+      { name: 'Packing', duration: 20 }
+    ]
+  }
+];
+
+export const DEFAULT_MANUFACTURING_ORDERS: ManufacturingOrder[] = [
+  {
+    id: 'MO-2026-001',
+    finishedProductId: 'item-7', // Wooden Table
+    quantity: 10,
+    status: 'In Progress',
+    orderDate: '2026-06-12',
+    assignee: 'Marcus Miller',
+    workCenter: 'Assembly Line'
   }
 ];

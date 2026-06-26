@@ -21,7 +21,9 @@ import {
   StockAdjustment,
   Expense,
   AccountsReceivable,
-  Invoice
+  Invoice,
+  BillOfMaterial,
+  ManufacturingOrder
 } from './types';
 
 // Import datasets
@@ -34,7 +36,9 @@ import {
   DEFAULT_ADJUSTMENTS,
   DEFAULT_EXPENSES,
   DEFAULT_RECEIVABLES,
-  DEFAULT_INVOICES
+  DEFAULT_INVOICES,
+  DEFAULT_BOMS,
+  DEFAULT_MANUFACTURING_ORDERS
 } from './data';
 
 // Import 16 Mobile Screen components
@@ -55,6 +59,9 @@ import ExpenseTracking from './components/erp/ExpenseTracking';
 import AccountsReceivableComponent from './components/erp/AccountsReceivable';
 import FinancialAnalytics from './components/erp/FinancialAnalytics';
 import InvoiceManagement from './components/erp/InvoiceManagement';
+import ManufacturingOrders from './components/erp/ManufacturingOrders';
+import BillOfMaterials from './components/erp/BillOfMaterials';
+import { Factory } from 'lucide-react'; // Add Factory icon
 
 const SCREENS = [
   // Operations Center
@@ -79,6 +86,10 @@ const SCREENS = [
   { name: 'Accounts Receivable', group: 'Fulfillment & Billing', desc: 'Outstanding customer invoice aging calendars, check receipts' },
   { name: 'Invoice Management', group: 'Fulfillment & Billing', desc: 'Manage client invoices and pending payments' },
 
+  // Manufacturing
+  { name: 'Manufacturing Orders', group: 'Factory & Production', desc: 'Manage active shop floor MOs and WIP assemblies' },
+  { name: 'Bill of Materials', group: 'Factory & Production', desc: 'Manage formulas, components, and operations for products' },
+
   // Treasury Core
   { name: 'Financial Overview', group: 'Treasury Core', desc: 'Cash flow metrics ledger, reserves check logs' },
   { name: 'Expense Tracking', group: 'Treasury Core', desc: 'Disbursements diary, categories, photo slip logs' },
@@ -96,6 +107,8 @@ export default function App() {
   const [expenses, setExpenses] = useState<Expense[]>(DEFAULT_EXPENSES);
   const [receivables, setReceivables] = useState<AccountsReceivable[]>(DEFAULT_RECEIVABLES);
   const [invoices, setInvoices] = useState<Invoice[]>(DEFAULT_INVOICES);
+  const [boms, setBoms] = useState<BillOfMaterial[]>(DEFAULT_BOMS);
+  const [manufacturingOrders, setManufacturingOrders] = useState<ManufacturingOrder[]>(DEFAULT_MANUFACTURING_ORDERS);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
 
   // Layout configs
@@ -129,6 +142,8 @@ export default function App() {
     setExpenses(DEFAULT_EXPENSES);
     setReceivables(DEFAULT_RECEIVABLES);
     setInvoices(DEFAULT_INVOICES);
+    setBoms(DEFAULT_BOMS);
+    setManufacturingOrders(DEFAULT_MANUFACTURING_ORDERS);
     setSelectedItemId('item-1');
     setSelectedPOId('PO-2026-015');
     setSelectedInvoiceId(null);
@@ -184,7 +199,7 @@ export default function App() {
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1 font-mono">16 Screens Code Directory</h3>
 
           <div className="space-y-4">
-            {['Operations Center', 'Logistics & Inventory', 'Acquisitions Pipeline', 'Fulfillment & Billing', 'Treasury Core'].map((group) => {
+            {['Operations Center', 'Logistics & Inventory', 'Acquisitions Pipeline', 'Fulfillment & Billing', 'Factory & Production', 'Treasury Core'].map((group) => {
               const groupScreens = SCREENS.filter(s => s.group === group);
               return (
                 <div key={group} className="space-y-1.5">
@@ -317,6 +332,24 @@ export default function App() {
               <PurchaseOrders
                 purchaseOrders={purchaseOrders}
                 setSelectedPOId={setSelectedPOId}
+                setActiveScreen={setActiveScreen}
+              />
+            )}
+
+            {activeScreen === 'Manufacturing Orders' && (
+              <ManufacturingOrders
+                manufacturingOrders={manufacturingOrders}
+                setManufacturingOrders={setManufacturingOrders}
+                items={items}
+                boms={boms}
+                setActiveScreen={setActiveScreen}
+              />
+            )}
+
+            {activeScreen === 'Bill of Materials' && (
+              <BillOfMaterials
+                boms={boms}
+                items={items}
                 setActiveScreen={setActiveScreen}
               />
             )}
@@ -466,6 +499,16 @@ export default function App() {
             >
               <Coins size={15} />
               <span className="text-[8px] mt-0.5">Treasury</span>
+            </button>
+
+            <button
+              id="tab-mfg"
+              onClick={() => setActiveScreen('Manufacturing Orders')}
+              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${activeScreen === 'Manufacturing Orders' || activeScreen === 'Bill of Materials' ? 'text-amber-500 font-bold' : 'text-slate-400 hover:text-white transition'
+                }`}
+            >
+              <Factory size={15} />
+              <span className="text-[8px] mt-0.5">Mfg</span>
             </button>
 
             <button

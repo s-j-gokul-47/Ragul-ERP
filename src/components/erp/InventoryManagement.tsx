@@ -228,16 +228,20 @@ export default function InventoryManagement({
                 </div>
 
                 {/* Right: Numbers */}
-                <div className="text-right shrink-0 flex flex-col items-end">
-                  <div className={`text-[15px] font-black flex items-center gap-1.5 ${isLowStock ? 'text-rose-400' : 'text-slate-200'
-                    }`}>
+                <div className="text-right shrink-0 flex flex-col items-end gap-0.5">
+                  <div className={`text-[13px] font-black flex items-center gap-1.5 ${isLowStock ? 'text-rose-400' : 'text-slate-200'}`}>
                     {isLowStock && <AlertCircle size={12} className="animate-pulse" />}
+                    <span className="text-slate-500 text-[9px] uppercase tracking-wider mr-1 font-mono">On Hand:</span> 
                     {item.qty}
-                    <span className="text-[10px] font-normal opacity-60 ml-0.5 uppercase tracking-wider">{item.unit}</span>
                   </div>
-                  <span className="text-[11px] text-emerald-500/80 font-medium mt-1">
-                    ${item.price.toFixed(2)}
-                  </span>
+                  <div className="text-[11px] font-medium text-amber-500/90 flex items-center gap-1">
+                    <span className="text-amber-600/60 text-[9px] uppercase tracking-wider font-mono">Rsvd:</span> 
+                    {item.reservedQty || 0}
+                  </div>
+                  <div className="text-[11px] font-bold text-emerald-400 flex items-center gap-1">
+                    <span className="text-emerald-600/60 text-[9px] uppercase tracking-wider font-mono">Free:</span> 
+                    {item.qty - (item.reservedQty || 0)}
+                  </div>
                 </div>
               </div>
             );
