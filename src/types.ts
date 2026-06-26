@@ -6,6 +6,20 @@ export type MOStatus = 'Draft' | 'Confirmed' | 'In Progress' | 'Done';
 export type AdjustmentType = 'Wastage' | 'Audit' | 'Damage' | 'Re-count' | 'Location Move';
 export type ExpenseCategory = 'Freight' | 'Logistics' | 'Wastage' | 'Packaging' | 'Rent' | 'Miscellaneous';
 export type ReceivableStatus = 'Paid' | 'Overdue' | 'Open';
+export type CustomerStatus = 'Lead' | 'Active' | 'Inactive';
+
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  status: CustomerStatus;
+  totalSpend: number;
+  lastContactDate: string;
+  notes: string;
+  tags: string[];
+}
 
 export interface InventoryItem {
   id: string;

@@ -468,3 +468,43 @@ export const DEFAULT_MANUFACTURING_ORDERS: ManufacturingOrder[] = [
     workCenter: 'Assembly Line'
   }
 ];
+
+export const DEFAULT_CUSTOMERS = [
+  {
+    id: 'cust-1',
+    name: 'Alexandra Wright',
+    email: 'alexandra@nexusedge.com',
+    phone: '+1 (555) 293-8472',
+    company: 'Nexus Edge Engineering',
+    status: 'Active',
+    totalSpend: 145000.50,
+    lastContactDate: '2026-06-20',
+    notes: 'Key account for Q3 expansion.',
+    tags: ['Enterprise', 'High Value']
+  },
+  {
+    id: 'cust-2',
+    name: 'David Chen',
+    email: 'dchen@biomeddiag.com',
+    phone: '+1 (555) 912-3311',
+    company: 'BioMed Diagnostics Inc',
+    status: 'Active',
+    totalSpend: 4950.00,
+    lastContactDate: '2026-06-15',
+    notes: 'Interested in bulk workstation upgrades.',
+    tags: ['Medical', 'Bulk']
+  },
+  {
+    id: 'cust-3',
+    name: 'Samantha Reyes',
+    email: 's.reyes@quantumcascade.io',
+    phone: '+1 (555) 888-2910',
+    company: 'Cascade Quantum Solutions',
+    status: 'Lead',
+    totalSpend: 0.00,
+    lastContactDate: '2026-06-25',
+    notes: 'Requested a quote for 50 custom servers. Waiting on procurement approval.',
+    tags: ['Tech', 'Prospect']
+  }
+];
+

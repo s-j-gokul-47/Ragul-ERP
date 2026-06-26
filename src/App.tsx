@@ -23,7 +23,8 @@ import {
   AccountsReceivable,
   Invoice,
   BillOfMaterial,
-  ManufacturingOrder
+  ManufacturingOrder,
+  Customer
 } from './types';
 
 // Import datasets
@@ -38,7 +39,8 @@ import {
   DEFAULT_RECEIVABLES,
   DEFAULT_INVOICES,
   DEFAULT_BOMS,
-  DEFAULT_MANUFACTURING_ORDERS
+  DEFAULT_MANUFACTURING_ORDERS,
+  DEFAULT_CUSTOMERS
 } from './data';
 
 // Import 16 Mobile Screen components
@@ -61,7 +63,9 @@ import FinancialAnalytics from './components/erp/FinancialAnalytics';
 import InvoiceManagement from './components/erp/InvoiceManagement';
 import ManufacturingOrders from './components/erp/ManufacturingOrders';
 import BillOfMaterials from './components/erp/BillOfMaterials';
-import { Factory } from 'lucide-react'; // Add Factory icon
+import CustomersDirectory from './components/erp/CustomersDirectory';
+import CustomerDetails from './components/erp/CustomerDetails';
+import { Factory, Users } from 'lucide-react'; // Add icons
 
 const SCREENS = [
   // Operations Center
@@ -80,6 +84,10 @@ const SCREENS = [
   { name: 'PO Details', group: 'Acquisitions Pipeline', desc: 'Drill down purchase lists, dispatch check authorizations' },
   { name: 'New Purchase Orders', group: 'Acquisitions Pipeline', desc: 'Draft and compose a multi-line vendor PO' },
   { name: 'Suppliers', group: 'Acquisitions Pipeline', desc: 'Wholesale suppliers catalog directory, performance, ratings' },
+
+  // Customer Relations (CRM)
+  { name: 'Customers Directory', group: 'Customer Relations', desc: 'Master client directory, sales leads, contact actions' },
+  { name: 'Customer Details', group: 'Customer Relations', desc: 'Client profile, lifetime value, transaction history' },
 
   // Fulfillment & Billing
   { name: 'Orders Management', group: 'Fulfillment & Billing', desc: 'Customer sales orders pipeline and fulfillment updates' },
@@ -109,7 +117,9 @@ export default function App() {
   const [invoices, setInvoices] = useState<Invoice[]>(DEFAULT_INVOICES);
   const [boms, setBoms] = useState<BillOfMaterial[]>(DEFAULT_BOMS);
   const [manufacturingOrders, setManufacturingOrders] = useState<ManufacturingOrder[]>(DEFAULT_MANUFACTURING_ORDERS);
+  const [customers, setCustomers] = useState<Customer[]>(DEFAULT_CUSTOMERS);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
 
   // Layout configs
   const [activeScreen, setActiveScreen] = useState<string>('Dashboard');
@@ -144,9 +154,11 @@ export default function App() {
     setInvoices(DEFAULT_INVOICES);
     setBoms(DEFAULT_BOMS);
     setManufacturingOrders(DEFAULT_MANUFACTURING_ORDERS);
+    setCustomers(DEFAULT_CUSTOMERS);
     setSelectedItemId('item-1');
     setSelectedPOId('PO-2026-015');
     setSelectedInvoiceId(null);
+    setSelectedCustomerId(null);
     setActiveScreen('Dashboard');
   };
 
@@ -199,7 +211,7 @@ export default function App() {
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1 font-mono">16 Screens Code Directory</h3>
 
           <div className="space-y-4">
-            {['Operations Center', 'Logistics & Inventory', 'Acquisitions Pipeline', 'Fulfillment & Billing', 'Factory & Production', 'Treasury Core'].map((group) => {
+            {['Operations Center', 'Customer Relations', 'Logistics & Inventory', 'Acquisitions Pipeline', 'Fulfillment & Billing', 'Factory & Production', 'Treasury Core'].map((group) => {
               const groupScreens = SCREENS.filter(s => s.group === group);
               return (
                 <div key={group} className="space-y-1.5">
@@ -296,6 +308,25 @@ export default function App() {
                 setActiveScreen={setActiveScreen}
                 setSelectedItemId={setSelectedItemId}
                 setSelectedPOId={setSelectedPOId}
+              />
+            )}
+
+            {activeScreen === 'Customers Directory' && (
+              <CustomersDirectory
+                customers={customers}
+                setActiveScreen={setActiveScreen}
+                setSelectedCustomerId={setSelectedCustomerId}
+              />
+            )}
+
+            {activeScreen === 'Customer Details' && (
+              <CustomerDetails
+                selectedCustomerId={selectedCustomerId}
+                customers={customers}
+                customerOrders={customerOrders}
+                invoices={invoices}
+                setActiveScreen={setActiveScreen}
+                setSelectedInvoiceId={setSelectedInvoiceId}
               />
             )}
 
@@ -489,6 +520,16 @@ export default function App() {
             >
               <Truck size={15} />
               <span className="text-[8px] mt-0.5">POs</span>
+            </button>
+
+            <button
+              id="tab-crm"
+              onClick={() => setActiveScreen('Customers Directory')}
+              className={`flex flex-col items-center justify-center p-1 font-mono tracking-tighter ${activeScreen === 'Customers Directory' || activeScreen === 'Customer Details' ? 'text-indigo-400 font-bold' : 'text-slate-400 hover:text-white transition'
+                }`}
+            >
+              <Users size={15} />
+              <span className="text-[8px] mt-0.5">CRM</span>
             </button>
 
             <button
