@@ -172,3 +172,17 @@ export interface Invoice {
     price: number;
   }>;
 }
+
+export type PaymentStatus = 'Completed' | 'Pending' | 'Failed' | 'Refunded';
+export type PaymentMethod = 'Credit Card' | 'Bank Transfer' | 'Cash' | 'Check';
+
+export interface Payment {
+  id: string;
+  date: string;
+  amount: number;
+  method: PaymentMethod;
+  status: PaymentStatus;
+  reference: string;
+  customerName: string;
+  invoiceId?: string;
+}

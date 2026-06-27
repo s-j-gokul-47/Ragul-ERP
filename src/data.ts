@@ -8,7 +8,8 @@ import {
   Expense, 
   AccountsReceivable,
   BillOfMaterial,
-  ManufacturingOrder
+  ManufacturingOrder,
+  Payment
 } from './types';
 
 export const DEFAULT_WAREHOUSES: Warehouse[] = [
@@ -508,3 +509,34 @@ export const DEFAULT_CUSTOMERS = [
   }
 ];
 
+export const DEFAULT_PAYMENTS: Payment[] = [
+  {
+    id: 'pay-1',
+    date: '2026-06-25',
+    amount: 12500.00,
+    method: 'Bank Transfer',
+    status: 'Completed',
+    reference: 'TXN-9823741A',
+    customerName: 'Nexus Edge Engineering',
+    invoiceId: 'INV-2026-104'
+  },
+  {
+    id: 'pay-2',
+    date: '2026-06-26',
+    amount: 450.00,
+    method: 'Credit Card',
+    status: 'Completed',
+    reference: 'STRIPE-CH_1M...',
+    customerName: 'BioMed Diagnostics Inc',
+    invoiceId: 'INV-2026-105'
+  },
+  {
+    id: 'pay-3',
+    date: '2026-06-27',
+    amount: 2100.00,
+    method: 'Check',
+    status: 'Pending',
+    reference: 'CHK-00492',
+    customerName: 'Alexandra Wright',
+  }
+];

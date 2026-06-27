@@ -24,7 +24,8 @@ import {
   Invoice,
   BillOfMaterial,
   ManufacturingOrder,
-  Customer
+  Customer,
+  Payment
 } from './types';
 
 // Import datasets
@@ -40,7 +41,8 @@ import {
   DEFAULT_INVOICES,
   DEFAULT_BOMS,
   DEFAULT_MANUFACTURING_ORDERS,
-  DEFAULT_CUSTOMERS
+  DEFAULT_CUSTOMERS,
+  DEFAULT_PAYMENTS
 } from './data';
 
 // Import 16 Mobile Screen components
@@ -65,6 +67,7 @@ import ManufacturingOrders from './components/erp/ManufacturingOrders';
 import BillOfMaterials from './components/erp/BillOfMaterials';
 import CustomersDirectory from './components/erp/CustomersDirectory';
 import CustomerDetails from './components/erp/CustomerDetails';
+import PaymentsManagement from './components/erp/PaymentsManagement';
 import { Factory, Users } from 'lucide-react'; // Add icons
 
 const SCREENS = [
@@ -93,6 +96,7 @@ const SCREENS = [
   { name: 'Orders Management', group: 'Fulfillment & Billing', desc: 'Customer sales orders pipeline and fulfillment updates' },
   { name: 'Accounts Receivable', group: 'Fulfillment & Billing', desc: 'Outstanding customer invoice aging calendars, check receipts' },
   { name: 'Invoice Management', group: 'Fulfillment & Billing', desc: 'Manage client invoices and pending payments' },
+  { name: 'Payments Management', group: 'Fulfillment & Billing', desc: 'Track incoming payments, receipts, and payment methods' },
 
   // Manufacturing
   { name: 'Manufacturing Orders', group: 'Factory & Production', desc: 'Manage active shop floor MOs and WIP assemblies' },
@@ -118,6 +122,7 @@ export default function App() {
   const [boms, setBoms] = useState<BillOfMaterial[]>(DEFAULT_BOMS);
   const [manufacturingOrders, setManufacturingOrders] = useState<ManufacturingOrder[]>(DEFAULT_MANUFACTURING_ORDERS);
   const [customers, setCustomers] = useState<Customer[]>(DEFAULT_CUSTOMERS);
+  const [payments, setPayments] = useState<Payment[]>(DEFAULT_PAYMENTS);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<string | null>(null);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
 
@@ -155,6 +160,7 @@ export default function App() {
     setBoms(DEFAULT_BOMS);
     setManufacturingOrders(DEFAULT_MANUFACTURING_ORDERS);
     setCustomers(DEFAULT_CUSTOMERS);
+    setPayments(DEFAULT_PAYMENTS);
     setSelectedItemId('item-1');
     setSelectedPOId('PO-2026-015');
     setSelectedInvoiceId(null);
@@ -443,6 +449,13 @@ export default function App() {
                 items={items}
                 warehouses={warehouses}
                 suppliers={suppliers}
+                setActiveScreen={setActiveScreen}
+              />
+            )}
+
+            {activeScreen === 'Payments Management' && (
+              <PaymentsManagement
+                payments={payments}
                 setActiveScreen={setActiveScreen}
               />
             )}
