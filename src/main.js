@@ -7,6 +7,7 @@ import { mountReactInventory, unmountReactInventory } from './components/erp/inv
 import { mountReactInvoice, unmountReactInvoice } from './components/erp/invoice-bridge.tsx';
 import { mountReactCrm, unmountReactCrm } from './components/erp/crm-bridge.tsx';
 import { mountReactPayment, unmountReactPayment } from './components/erp/payment-bridge.tsx';
+import { mountReactReport, unmountReactReport } from './components/erp/report-bridge.tsx';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initially render Auth
@@ -56,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tabId !== 'payment') {
       unmountReactPayment();
     }
+    if (tabId !== 'report') {
+      unmountReactReport();
+    }
 
     // Update active state in bottom nav
     renderBottomNav('bottom-nav-container', tabId);
@@ -77,6 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (tabId === 'payment') {
       mainContent.innerHTML = ''; // clear out anything
       mountReactPayment('main-content');
+    } else if (tabId === 'report') {
+      mainContent.innerHTML = ''; // clear out anything
+      mountReactReport('main-content');
     } else {
       mainContent.innerHTML = `
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; opacity: 0; animation: fadeIn 0.3s forwards;">

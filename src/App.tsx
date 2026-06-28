@@ -68,6 +68,7 @@ import BillOfMaterials from './components/erp/BillOfMaterials';
 import CustomersDirectory from './components/erp/CustomersDirectory';
 import CustomerDetails from './components/erp/CustomerDetails';
 import PaymentsManagement from './components/erp/PaymentsManagement';
+import ReportsDashboard from './components/erp/ReportsDashboard';
 import { Factory, Users } from 'lucide-react'; // Add icons
 
 const SCREENS = [
@@ -105,7 +106,10 @@ const SCREENS = [
   // Treasury Core
   { name: 'Financial Overview', group: 'Treasury Core', desc: 'Cash flow metrics ledger, reserves check logs' },
   { name: 'Expense Tracking', group: 'Treasury Core', desc: 'Disbursements diary, categories, photo slip logs' },
-  { name: 'Financial Analytics', group: 'Treasury Core', desc: 'Profits analytics growth curves diagrams, division donuts' }
+  { name: 'Financial Analytics', group: 'Treasury Core', desc: 'Profits analytics growth curves diagrams, division donuts' },
+
+  // Reports & Analytics
+  { name: 'Reports Dashboard', group: 'Reports & Analytics', desc: 'Centralized business reports and metric aggregates' }
 ];
 
 export default function App() {
@@ -217,7 +221,7 @@ export default function App() {
           <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1 font-mono">16 Screens Code Directory</h3>
 
           <div className="space-y-4">
-            {['Operations Center', 'Customer Relations', 'Logistics & Inventory', 'Acquisitions Pipeline', 'Fulfillment & Billing', 'Factory & Production', 'Treasury Core'].map((group) => {
+            {['Operations Center', 'Customer Relations', 'Logistics & Inventory', 'Acquisitions Pipeline', 'Fulfillment & Billing', 'Factory & Production', 'Treasury Core', 'Reports & Analytics'].map((group) => {
               const groupScreens = SCREENS.filter(s => s.group === group);
               return (
                 <div key={group} className="space-y-1.5">
@@ -497,6 +501,19 @@ export default function App() {
               <InvoiceManagement
                 invoices={invoices}
                 setSelectedInvoiceId={setSelectedInvoiceId}
+                setActiveScreen={setActiveScreen}
+              />
+            )}
+
+            {activeScreen === 'Reports Dashboard' && (
+              <ReportsDashboard
+                customerOrders={customerOrders}
+                expenses={expenses}
+                items={items}
+                receivables={receivables}
+                purchaseOrders={purchaseOrders}
+                invoices={invoices}
+                currency={currency}
                 setActiveScreen={setActiveScreen}
               />
             )}
